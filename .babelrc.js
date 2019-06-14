@@ -21,7 +21,8 @@ module.exports = {
           '@root': './',
           '@config': './config',
           '@styles': './src/styles',
-          '@redux': './src/redux'
+          '@redux': './src/redux',
+          '@utils': './src/utils'
         }
       }
     ]

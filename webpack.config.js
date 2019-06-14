@@ -1,4 +1,8 @@
-require('dotenv').config();
+try {
+  require('dotenv').config();
+} catch (e) {
+  // do nothing for now
+}
 
 const webpackMerge = require('webpack-merge');
 const common = require('./config/webpack/webpack.common');

@@ -71,4 +71,6 @@ TBD use release-it
 
 ### Deploy
 
-TBD
+```sh
+yarn run deploy
+```

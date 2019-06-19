@@ -58,6 +58,7 @@ module.exports = {
   output: {
     filename: `${paths.jsFolder}/[name].[hash].js`,
     path: paths.outputPath,
+    publicPath: '/',
     chunkFilename: '[name].[chunkhash].js'
   },
   plugins,

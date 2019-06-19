@@ -7,6 +7,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: paths.outputPath,
+    publicPath: '/',
     chunkFilename: '[name].js'
   },
   entry: ['react-hot-loader/patch'],

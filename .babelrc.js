@@ -20,7 +20,11 @@ module.exports = {
         alias: {
           '@root': './',
           '@config': './config',
+          '@config': './config',
           '@styles': './src/styles',
+          '@components': './src/components',
+          '@containers': './src/containers',
+          '@pages': './src/pages',
           '@redux': './src/redux',
           '@utils': './src/utils'
         }

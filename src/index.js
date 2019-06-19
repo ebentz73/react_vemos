@@ -29,12 +29,19 @@ const Main = () => {
 export default App;
 
 if (process.env.NODE_ENV === 'development') {
-  ReactDOM.render(
-    <AppContainer>
-      <Main />
-    </AppContainer>,
-    document.getElementById('root')
-  );
+  const render = () => {
+    ReactDOM.render(
+      <AppContainer>
+        <Main />
+      </AppContainer>,
+      document.getElementById('root')
+    );
+  };
+
+  render();
+  if (module.hot) {
+    module.hot.accept('./App', render());
+  }
 } else {
   ReactDOM.render(<Main />, document.getElementById('root'));
 }

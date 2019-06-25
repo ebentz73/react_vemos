@@ -19,7 +19,7 @@ module.exports = {
         cwd: __dirname,
         alias: {
           '@root': './',
-          '@config': './config',
+          '@assets': './src/assets',
           '@config': './config',
           '@styles': './src/styles',
           '@components': './src/components',

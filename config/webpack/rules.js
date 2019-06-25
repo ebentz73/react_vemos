@@ -21,7 +21,11 @@ module.exports = [
   },
   {
     test: /\.(jpe?g|png|gif|svg)$/i,
-    use: ['url-loader?limit=10000']
+    use: 'file-loader?name=[hash:base64:7].[ext]'
+  },
+  {
+    test: /favicon\.png$/,
+    loader: 'file-loader?name=[name].[ext]'
   },
   {
     test: /\.css$/,

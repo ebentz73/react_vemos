@@ -24,6 +24,7 @@ module.exports = {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: paths.templatePath,
+      favicon: './src/assets/favicon.png',
       minify: {
         collapseInlineTagWhitespace: true,
         collapseWhitespace: true,

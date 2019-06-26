@@ -1,5 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/firestore';
 
 const config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -14,4 +16,12 @@ firebase.initializeApp(config);
 
 export function getAuth() {
   return firebase.auth();
+}
+
+export function getFirestore() {
+  return firebase.firestore();
+}
+
+export function getFirebaseRef() {
+  return firebase.database().ref();
 }

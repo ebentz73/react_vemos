@@ -1,7 +1,7 @@
 // @TODO replace console with other
 
 const logger = {
-  debug: console.debug,
+  debug: process.env.DEBUG ? console.debug : () => {},
   error: console.error,
   log: console.log,
   warn: console.warn

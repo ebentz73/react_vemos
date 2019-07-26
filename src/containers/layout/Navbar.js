@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import Button from '@material-ui/core/Button';
 import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
 import { makeStyles, styled, useTheme } from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import BusinessIcon from '@material-ui/icons/Business';
+import VenueIcon from '@material-ui/icons/Business';
+import ReservationIcon from '@material-ui/icons/ListAlt';
 import GroupIcon from '@material-ui/icons/Group';
+import EventIcon from '@material-ui/icons/Event';
+import MarketingIcon from '@material-ui/icons/RssFeed';
+import TransactionIcon from '@material-ui/icons/MonetizationOn';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import List from '@material-ui/core/List';
@@ -51,10 +54,15 @@ function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(true);
+  const [openAnalytics, setOpenAnalytics] = React.useState(true);
+  const [openManage, setOpenManage] = React.useState(true);
 
-  function handleClick() {
-    setOpen(!open);
+  function handleAnalyticsClick() {
+    setOpenAnalytics(!openAnalytics);
+  }
+
+  function handleManageClick() {
+    setOpenManage(!openManage);
   }
 
   function handleDrawerToggle() {
@@ -79,11 +87,11 @@ function Navbar(props) {
           </ListItemIcon>
           <NavListItemText secondary="DASHBOARD" />
         </NavListItem>
-        <NavListItem button onClick={handleClick}>
+        <NavListItem button onClick={handleAnalyticsClick}>
           <NavListItemText secondary="ANALYTICS" />
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {openAnalytics ? <ExpandLess /> : <ExpandMore />}
         </NavListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={openAnalytics} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <NavListItem button color="secondary">
               <ListItemIcon>
@@ -93,13 +101,13 @@ function Navbar(props) {
             </NavListItem>
             <NavListItem button color="secondary">
               <ListItemIcon>
-                <BusinessIcon />
+                <VenueIcon />
               </ListItemIcon>
               <NavListItemText secondary="Venue" />
             </NavListItem>
             <NavListItem button color="secondary">
               <ListItemIcon>
-                <GroupIcon />
+                <ReservationIcon />
               </ListItemIcon>
               <NavListItemText secondary="Reservations" />
             </NavListItem>
@@ -111,13 +119,57 @@ function Navbar(props) {
             </NavListItem>
             <NavListItem button color="secondary">
               <ListItemIcon>
-                <GroupIcon />
+                <EventIcon />
               </ListItemIcon>
               <NavListItemText secondary="Events" />
             </NavListItem>
             <NavListItem button color="secondary">
               <ListItemIcon>
+                <MarketingIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="Marketing" />
+            </NavListItem>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
+                <TransactionIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="Transactions" />
+            </NavListItem>
+          </List>
+        </Collapse>
+        <NavListItem button onClick={handleManageClick}>
+          <NavListItemText secondary="MANAGE" />
+          {openManage ? <ExpandLess /> : <ExpandMore />}
+        </NavListItem>
+        <Collapse in={openManage} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="Events & Tickets" />
+            </NavListItem>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
+                <ReservationIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="Reservations" />
+            </NavListItem>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
+                <ReservationIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="Reservations" />
+            </NavListItem>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
                 <GroupIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="Guest List" />
+            </NavListItem>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
+                <MarketingIcon />
               </ListItemIcon>
               <NavListItemText secondary="Marketing" />
             </NavListItem>
@@ -125,17 +177,16 @@ function Navbar(props) {
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-              <NavListItemText secondary="Transactions" />
+              <NavListItemText secondary="Guest Profiles" />
+            </NavListItem>
+            <NavListItem button color="secondary">
+              <ListItemIcon>
+                <GroupIcon />
+              </ListItemIcon>
+              <NavListItemText secondary="ID Scan" />
             </NavListItem>
           </List>
         </Collapse>
-        <Button
-          aria-controls="customized-menu"
-          aria-haspopup="true"
-          color="default"
-        >
-          MANAGE
-        </Button>
       </List>
     </Box>
   );

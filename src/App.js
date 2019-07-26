@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Header from '@containers/layout/Header';
+import Navbar from '@containers/layout/Navbar';
 import Notifier from '@containers/layout/Notifier';
 import Login from '@pages/Login';
 import Home from '@pages/Home';
@@ -44,10 +45,13 @@ class App extends Component {
 
   renderUserRoutes() {
     return (
-      <Switch>
-        <Route exact path="/home" component={Home} />
-        <Route render={() => <Redirect to="/home" />} />
-      </Switch>
+      <React.Fragment>
+        <Navbar />
+        <Switch>
+          <Route exact path="/home" component={Home} />
+          <Route render={() => <Redirect to="/home" />} />
+        </Switch>
+      </React.Fragment>
     );
   }
 
@@ -90,11 +94,11 @@ class App extends Component {
   }
 
   render() {
-    const { loaded } = this.props;
+    const { loaded, isLoggedIn } = this.props;
 
     return (
       <MainContainer>
-        <Header />
+        <Header isLoggedIn={isLoggedIn} />
         {this.renderLoadingBar()}
         {loaded ? this.renderContent() : this.renderLoading()}
         <Notifier />

@@ -8,11 +8,13 @@ TopbarButton.propTypes = {
   children: PropTypes.node,
   buttonProps: PropTypes.object,
   isMenuItem: PropTypes.bool,
+  externalLink: PropTypes.bool,
   route: PropTypes.string
 };
 
 TopbarButton.defaultProps = {
   isMenuItem: false,
+  externalLink: true,
   route: ''
 };
 
@@ -38,14 +40,19 @@ const useStyles = makeStyles(theme => ({
 export default function TopbarButton({
   isMenuItem,
   route,
+  externalLink,
   children,
-  ...buttonProps
+  buttonProps,
+  ...rest
 }) {
   const classes = useStyles();
+  const to = externalLink
+    ? `https://${process.env.WEB_APP_URL + route}`
+    : route;
   const conditionalProps = isMenuItem
     ? {
         component: Link,
-        href: `https://${process.env.WEB_APP_URL + route}`,
+        href: to,
         target: '_blank'
       }
     : {
@@ -53,7 +60,7 @@ export default function TopbarButton({
       };
 
   return (
-    <Box display="flex" className={classes.container} {...buttonProps}>
+    <Box display="flex" className={classes.container} {...rest}>
       <Button
         classes={{
           root: classes.buttonRoot,
@@ -61,6 +68,7 @@ export default function TopbarButton({
         }}
         fullWidth={true}
         {...conditionalProps}
+        {...buttonProps}
       >
         {children}
       </Button>

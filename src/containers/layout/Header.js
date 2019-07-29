@@ -70,6 +70,7 @@ const TopBarMenu = props => (
       vertical: 'top',
       horizontal: 'right'
     }}
+    getContentAnchorEl={null}
     keepMounted
     {...props}
   />

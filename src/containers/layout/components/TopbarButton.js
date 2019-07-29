@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'react-router-dom';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 TopbarButton.propTypes = {
@@ -34,6 +33,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'self-start',
     textTransform: 'none',
     marginLeft: theme.spacing(1)
+  },
+  link: {
+    display: 'flex'
   }
 }));
 
@@ -50,17 +52,13 @@ export default function TopbarButton({
     ? `https://${process.env.WEB_APP_URL + route}`
     : route;
   const conditionalProps = isMenuItem
-    ? {
-        component: Link,
-        href: to,
-        target: '_blank'
-      }
+    ? {}
     : {
         color: 'inherit'
       };
 
-  return (
-    <Box display="flex" className={classes.container} {...rest}>
+  function innerButton() {
+    return (
       <Button
         classes={{
           root: classes.buttonRoot,
@@ -72,6 +70,18 @@ export default function TopbarButton({
       >
         {children}
       </Button>
+    );
+  }
+
+  return (
+    <Box display="flex" className={classes.container} {...rest}>
+      {isMenuItem ? (
+        <Link href={to} underline="none" className={classes.link}>
+          {innerButton()}
+        </Link>
+      ) : (
+        innerButton()
+      )}
     </Box>
   );
 }

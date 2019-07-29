@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'react-router-dom';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 SidebarButton.propTypes = {
@@ -59,21 +58,15 @@ export default function SidebarButton({
   const to = externalLink
     ? `https://${process.env.WEB_APP_URL + route}`
     : route;
-  const conditionalProps = hasSubButtons
-    ? {}
-    : {
-        component: Link,
-        href: to,
-        target: '_blank'
-      };
+
   const subButtonProps = isSubButton
     ? {
         className: classes.subButtonLabel
       }
     : {};
 
-  return (
-    <Box className={classes.container}>
+  function innerButton() {
+    return (
       <Button
         classes={{
           root: classes.buttonRoot,
@@ -81,12 +74,23 @@ export default function SidebarButton({
         }}
         fullWidth={true}
         color="secondary"
-        {...conditionalProps}
         {...subButtonProps}
         {...buttonProps}
       >
         {children}
       </Button>
+    );
+  }
+
+  return (
+    <Box className={classes.container}>
+      {hasSubButtons ? (
+        innerButton()
+      ) : (
+        <Link href={to} underline="none">
+          {innerButton()}
+        </Link>
+      )}
     </Box>
   );
 }

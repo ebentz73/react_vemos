@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
@@ -28,6 +30,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Collapse from '@material-ui/core/Collapse';
 import SidebarButton from '@containers/layout/components/SidebarButton';
+import { AuthSelectors } from '@redux/AuthRedux';
 
 const drawerWidth = 240;
 
@@ -70,19 +73,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Navbar(props) {
-  const { container } = props;
+Navbar.propTypes = {
+  venue: PropTypes.object
+};
+
+function Navbar({ venue }) {
   const classes = useStyles();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [openAnalytics, setOpenAnalytics] = React.useState(true);
   const [openManage, setOpenManage] = React.useState(true);
   const [openReservation, setOpenReservation] = React.useState(false);
   const [openMarketing, setOpenMarketing] = React.useState(false);
   const [openID, setOpenID] = React.useState(false);
-
-  function handleDrawerToggle() {
-    setMobileOpen(!mobileOpen);
-  }
+  const currentDate = moment().format('YYYY-MM-DD');
+  const thirtyDaysAgo = moment()
+    .subtract(29, 'days')
+    .format('YYYY-MM-DD');
 
   function handleAnalyticsClick() {
     setOpenAnalytics(!openAnalytics);
@@ -128,27 +133,36 @@ function Navbar(props) {
             <WatchLaterIcon className={classes.buttonIcon} />
             Real Time
           </SidebarButton>
-          <SidebarButton route="/analytics">
+          <SidebarButton route={`/analytics/${thirtyDaysAgo}/${currentDate}`}>
             <VenueIcon className={classes.buttonIcon} />
             Venue
           </SidebarButton>
-          <SidebarButton route="/analytics">
+          <SidebarButton
+            route={`/analytics/${thirtyDaysAgo}/${currentDate}/reservations`}
+          >
             <ReservationIcon className={classes.buttonIcon} />
             Reservations
           </SidebarButton>
-          <SidebarButton route="/analytics">
+          <SidebarButton
+            route={`/analytics/${thirtyDaysAgo}/${currentDate}/guests`}
+          >
             <GroupIcon className={classes.buttonIcon} />
             Guests
           </SidebarButton>
-          <SidebarButton route="/analytics">
+          <SidebarButton route={`/analytics/events/${venue.id}`}>
             <EventIcon className={classes.buttonIcon} />
             Events
           </SidebarButton>
-          <SidebarButton route="/analytics">
+          <SidebarButton
+            route={`/analytics/${thirtyDaysAgo}/${currentDate}/referrers`}
+          >
             <MarketingIcon className={classes.buttonIcon} />
             Marketing
           </SidebarButton>
-          <SidebarButton route="/transaction" externalLink={false}>
+          <SidebarButton
+            route={`/transaction/?filters[start]=${thirtyDaysAgo}&filters[end]=${currentDate}`}
+            externalLink={false}
+          >
             <TransactionIcon className={classes.buttonIcon} />
             Transactions
           </SidebarButton>
@@ -240,23 +254,6 @@ function Navbar(props) {
     <Box display="flex">
       <CssBaseline />
       <Box className={classes.drawer}>
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            ModalProps={{
-              keepMounted: true
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
         <Hidden xsDown implementation="css">
           <Drawer
             classes={{
@@ -273,8 +270,8 @@ function Navbar(props) {
   );
 }
 
-Navbar.propTypes = {
-  container: PropTypes.object
-};
+const mapStateToProps = state => ({
+  venue: AuthSelectors.selectCurrentVenue(state)
+});
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);

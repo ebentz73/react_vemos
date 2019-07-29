@@ -51,7 +51,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/home" component={Home} />
           <Route exact path="/transaction" component={Transaction} />
-          <Route render={() => <Redirect to="/home" />} />
+          <Route render={() => <Redirect to="/transaction" />} />
         </Switch>
       </React.Fragment>
     );

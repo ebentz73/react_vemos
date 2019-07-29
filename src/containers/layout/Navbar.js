@@ -127,7 +127,7 @@ function Navbar({ venue }) {
     <Box>
       <Box className={classes.toolbar} />
       <List component="nav">
-        <SidebarButton route="/analytics">
+        <SidebarButton route="/dashboard">
           <DashboardIcon className={classes.buttonIcon} />
           DASHBOARD
         </SidebarButton>
@@ -202,7 +202,7 @@ function Navbar({ venue }) {
                 Table Map
               </SidebarButton>
             </Collapse>
-            <SidebarButton route="/guestlist">
+            <SidebarButton route={`/guestlist/${currentDate}`}>
               <GuestListIcon className={classes.buttonIcon} />
               Guest List
             </SidebarButton>

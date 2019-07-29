@@ -309,7 +309,7 @@ export default function Header({ isLoggedIn }) {
           classes={{ container: classes.mobileCollapse }}
         >
           <Box display="flex" flexDirection="column" width={1}>
-            <TopBarButton route="/analytics" isMenuItem={true}>
+            <TopBarButton route="/dashboard" isMenuItem={true}>
               <span style={{ display: 'flex', color: 'white' }}>
                 <DashboardIcon className={classes.buttonIcon} />
                 Dashboard

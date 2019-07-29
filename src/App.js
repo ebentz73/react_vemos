@@ -11,6 +11,7 @@ import Navbar from '@containers/layout/Navbar';
 import Notifier from '@containers/layout/Notifier';
 import Login from '@pages/Login';
 import Home from '@pages/Home';
+import Transaction from '@pages/Transaction';
 import AppActions, { AppSelectors } from '@redux/AppRedux';
 import { AuthSelectors } from '@redux/AuthRedux';
 
@@ -49,6 +50,7 @@ class App extends Component {
         <Navbar />
         <Switch>
           <Route exact path="/home" component={Home} />
+          <Route exact path="/transaction" component={Transaction} />
           <Route render={() => <Redirect to="/home" />} />
         </Switch>
       </React.Fragment>

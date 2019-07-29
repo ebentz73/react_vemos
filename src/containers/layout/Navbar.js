@@ -148,7 +148,7 @@ function Navbar(props) {
             <MarketingIcon className={classes.buttonIcon} />
             Marketing
           </SidebarButton>
-          <SidebarButton route="/analytics">
+          <SidebarButton route="/transaction" externalLink={false}>
             <TransactionIcon className={classes.buttonIcon} />
             Transactions
           </SidebarButton>

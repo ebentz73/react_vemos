@@ -9,6 +9,7 @@ SidebarButton.propTypes = {
   route: PropTypes.string,
   hasSubButtons: PropTypes.bool,
   isSubButton: PropTypes.bool,
+  externalLink: PropTypes.bool,
   buttonProps: PropTypes.object,
   rest: PropTypes.object
 };
@@ -16,6 +17,7 @@ SidebarButton.propTypes = {
 SidebarButton.defaultProps = {
   hasSubButtons: false,
   isSubButton: false,
+  externalLink: true,
   route: ''
 };
 
@@ -47,17 +49,21 @@ const useStyles = makeStyles(theme => ({
 
 export default function SidebarButton({
   route,
+  externalLink,
   hasSubButtons,
   isSubButton,
   children,
   ...buttonProps
 }) {
   const classes = useStyles();
+  const to = externalLink
+    ? `https://${process.env.WEB_APP_URL + route}`
+    : route;
   const conditionalProps = hasSubButtons
     ? {}
     : {
         component: Link,
-        href: `https://${process.env.WEB_APP_URL + route}`,
+        href: to,
         target: '_blank'
       };
   const subButtonProps = isSubButton

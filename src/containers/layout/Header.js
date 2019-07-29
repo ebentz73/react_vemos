@@ -25,9 +25,6 @@ import LogoImg from '@assets/logo.png';
 import TopBarButton from '@containers/layout/components/TopbarButton';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1
   },
@@ -273,6 +270,7 @@ export default function Header({ isLoggedIn }) {
             </TopBarMenu>
           </Box>
         </Hidden>
+
         <Hidden mdUp>
           <IconButton
             edge="end"

@@ -33,27 +33,11 @@ import SidebarButton from '@containers/layout/components/SidebarButton';
 import { AuthSelectors } from '@redux/AuthRedux';
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles(theme => ({
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      flexShrink: 0
-    }
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none'
-    }
-  },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
     backgroundColor: theme.palette.primary.main
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3)
   },
   listItem: {
     color: 'white'
@@ -67,9 +51,6 @@ const useStyles = makeStyles(theme => ({
   buttonIcon: {
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(4)
-  },
-  subButton: {
-    paddingLeft: theme.spacing(3)
   }
 }));
 
@@ -150,6 +131,7 @@ function Navbar({ venue }) {
           <DashboardIcon className={classes.buttonIcon} />
           DASHBOARD
         </SidebarButton>
+
         <ListItem
           classes={{ root: classes.listItem, button: classes.listButton }}
           button
@@ -180,6 +162,7 @@ function Navbar({ venue }) {
             Transactions
           </SidebarButton>
         </Collapse>
+
         <ListItem
           button
           classes={{ root: classes.listItem, button: classes.listButton }}
@@ -266,19 +249,17 @@ function Navbar({ venue }) {
   return (
     <Box display="flex">
       <CssBaseline />
-      <Box className={classes.drawer}>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </Box>
+      <Hidden xsDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerPaper
+          }}
+          variant="permanent"
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
     </Box>
   );
 }

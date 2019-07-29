@@ -52,7 +52,8 @@ export default function SidebarButton({
   hasSubButtons,
   isSubButton,
   children,
-  ...buttonProps
+  buttonProps,
+  ...rest
 }) {
   const classes = useStyles();
   const to = externalLink
@@ -83,7 +84,7 @@ export default function SidebarButton({
   }
 
   return (
-    <Box className={classes.container}>
+    <Box className={classes.container} {...rest}>
       {hasSubButtons ? (
         innerButton()
       ) : (

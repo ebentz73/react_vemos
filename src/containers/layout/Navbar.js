@@ -27,7 +27,7 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Collapse from '@material-ui/core/Collapse';
-import SidebarButton from './components/SidebarButton';
+import SidebarButton from '@containers/layout/components/SidebarButton';
 
 const drawerWidth = 240;
 

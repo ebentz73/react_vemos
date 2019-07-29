@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,10 +10,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ReportIcon from '@material-ui/icons/Report';
 import DataIcon from '@material-ui/icons/Storage';
 import POSIcon from '@material-ui/icons/FiberManualRecord';
-import LogoImg from '@assets/logo.png';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import TopBarButton from './components/TopbarButton';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import UpdateIcon from '@material-ui/icons/Update';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -21,7 +18,11 @@ import IDIcon from '@material-ui/icons/PictureInPicture';
 import ConnectIcon from '@material-ui/icons/SwapHorizontalCircle';
 import Hidden from '@material-ui/core/Hidden';
 import Collapse from '@material-ui/core/Collapse';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import { makeStyles } from '@material-ui/core/styles';
+import LogoImg from '@assets/logo.png';
+import TopBarButton from '@containers/layout/components/TopbarButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,7 +77,6 @@ const TopBarMenu = props => (
   />
 );
 
-// @TODO logged-in menu
 export default function Header({ isLoggedIn }) {
   const classes = useStyles();
   const [anchorUpgrade, setAnchorUpgrade] = React.useState(null);
@@ -117,10 +117,6 @@ export default function Header({ isLoggedIn }) {
     }
   ];
 
-  function handleTopbarToggle() {
-    setMobileTopBar(!openMobileTopBar);
-  }
-
   function handleUpgradeClose() {
     setAnchorUpgrade(null);
   }
@@ -143,6 +139,10 @@ export default function Header({ isLoggedIn }) {
 
   function handleUserClick(event) {
     setAnchorUser(event.currentTarget);
+  }
+
+  function handleTopbarToggle() {
+    setMobileTopBar(!openMobileTopBar);
   }
 
   function handleUpgradeCollapse() {

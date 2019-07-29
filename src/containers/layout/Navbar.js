@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
-import { makeStyles, styled, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import VenueIcon from '@material-ui/icons/Business';
 import ReservationIcon from '@material-ui/icons/ListAlt';
@@ -14,11 +14,20 @@ import EventIcon from '@material-ui/icons/Event';
 import MarketingIcon from '@material-ui/icons/RssFeed';
 import TransactionIcon from '@material-ui/icons/MonetizationOn';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import GuestListIcon from '@material-ui/icons/CheckCircle';
+import TileIcon from '@material-ui/icons/ViewModule';
+import ListIcon from '@material-ui/icons/ViewList';
+import MapIcon from '@material-ui/icons/Place';
+import ConnectIcon from '@material-ui/icons/SwapHorizontalCircle';
+import ShareIcon from '@material-ui/icons/Share';
+import IDIcon from '@material-ui/icons/PictureInPicture';
+import DayIcon from '@material-ui/icons/AccessTime';
+import BlockIcon from '@material-ui/icons/Block';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Collapse from '@material-ui/core/Collapse';
+import SidebarButton from './components/SidebarButton';
 
 const drawerWidth = 240;
 
@@ -44,18 +53,36 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3)
   },
   listItem: {
-    color: theme.palette.secondary,
-    width: 1
+    color: 'white'
+  },
+  listButton: {
+    color: 'white'
+  },
+  listText: {
+    fontWeight: 500
+  },
+  buttonIcon: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(4)
+  },
+  subButton: {
+    paddingLeft: theme.spacing(3)
   }
 }));
 
 function Navbar(props) {
   const { container } = props;
   const classes = useStyles();
-  const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [openAnalytics, setOpenAnalytics] = React.useState(true);
   const [openManage, setOpenManage] = React.useState(true);
+  const [openReservation, setOpenReservation] = React.useState(false);
+  const [openMarketing, setOpenMarketing] = React.useState(false);
+  const [openID, setOpenID] = React.useState(false);
+
+  function handleDrawerToggle() {
+    setMobileOpen(!mobileOpen);
+  }
 
   function handleAnalyticsClick() {
     setOpenAnalytics(!openAnalytics);
@@ -65,126 +92,144 @@ function Navbar(props) {
     setOpenManage(!openManage);
   }
 
-  function handleDrawerToggle() {
-    setMobileOpen(!mobileOpen);
+  function handleReservationClick() {
+    setOpenReservation(!openReservation);
   }
 
-  const NavListItem = styled(ListItem)({
-    color: theme.palette.secondary.main
-  });
+  function handleMarketingClick() {
+    setOpenMarketing(!openMarketing);
+  }
 
-  const NavListItemText = styled(ListItemText)({
-    color: theme.palette.secondary.main
-  });
+  function handleIDClick() {
+    setOpenID(!openID);
+  }
 
   const drawer = (
     <Box>
       <Box className={classes.toolbar} />
       <List component="nav">
-        <NavListItem button>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <NavListItemText secondary="DASHBOARD" />
-        </NavListItem>
-        <NavListItem button onClick={handleAnalyticsClick}>
-          <NavListItemText secondary="ANALYTICS" />
+        <SidebarButton route="/analytics">
+          <DashboardIcon className={classes.buttonIcon} />
+          DASHBOARD
+        </SidebarButton>
+        <ListItem
+          classes={{ root: classes.listItem, button: classes.listButton }}
+          button
+          onClick={handleAnalyticsClick}
+        >
+          <ListItemText
+            classes={{ primary: classes.listText }}
+            primary="ANALYTICS"
+          />
           {openAnalytics ? <ExpandLess /> : <ExpandMore />}
-        </NavListItem>
-        <Collapse in={openAnalytics} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <WatchLaterIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Real Time" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <VenueIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Venue" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <ReservationIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Reservations" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Guests" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Events" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <MarketingIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Marketing" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <TransactionIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Transactions" />
-            </NavListItem>
-          </List>
+        </ListItem>
+        <Collapse in={openAnalytics} timeout={500} unmountOnExit>
+          <SidebarButton route="/analytics">
+            <WatchLaterIcon className={classes.buttonIcon} />
+            Real Time
+          </SidebarButton>
+          <SidebarButton route="/analytics">
+            <VenueIcon className={classes.buttonIcon} />
+            Venue
+          </SidebarButton>
+          <SidebarButton route="/analytics">
+            <ReservationIcon className={classes.buttonIcon} />
+            Reservations
+          </SidebarButton>
+          <SidebarButton route="/analytics">
+            <GroupIcon className={classes.buttonIcon} />
+            Guests
+          </SidebarButton>
+          <SidebarButton route="/analytics">
+            <EventIcon className={classes.buttonIcon} />
+            Events
+          </SidebarButton>
+          <SidebarButton route="/analytics">
+            <MarketingIcon className={classes.buttonIcon} />
+            Marketing
+          </SidebarButton>
+          <SidebarButton route="/analytics">
+            <TransactionIcon className={classes.buttonIcon} />
+            Transactions
+          </SidebarButton>
         </Collapse>
-        <NavListItem button onClick={handleManageClick}>
-          <NavListItemText secondary="MANAGE" />
+        <ListItem
+          button
+          classes={{ root: classes.listItem, button: classes.listButton }}
+          onClick={handleManageClick}
+        >
+          <ListItemText
+            classes={{ primary: classes.listText }}
+            primary="MANAGE"
+          />
           {openManage ? <ExpandLess /> : <ExpandMore />}
-        </NavListItem>
-        <Collapse in={openManage} timeout="auto" unmountOnExit>
+        </ListItem>
+        <Collapse in={openManage} timeout={500} unmountOnExit>
           <List component="div" disablePadding>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Events & Tickets" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <ReservationIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Reservations" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <ReservationIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Reservations" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Guest List" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <MarketingIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Marketing" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="Guest Profiles" />
-            </NavListItem>
-            <NavListItem button color="secondary">
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <NavListItemText secondary="ID Scan" />
-            </NavListItem>
+            <SidebarButton route="/events">
+              <EventIcon className={classes.buttonIcon} />
+              Events & Tickets
+            </SidebarButton>
+            <SidebarButton
+              onClick={handleReservationClick}
+              hasSubButtons={true}
+            >
+              <ReservationIcon className={classes.buttonIcon} />
+              Reservations
+              {openReservation ? <ExpandLess /> : <ExpandMore />}
+            </SidebarButton>
+            <Collapse in={openReservation} timeout={300} unmountOnExit>
+              <SidebarButton route="/reservations" isSubButton={true}>
+                <TileIcon className={classes.buttonIcon} />
+                Title View
+              </SidebarButton>
+              <SidebarButton route="/reservations/list" isSubButton={true}>
+                <ListIcon className={classes.buttonIcon} />
+                List View
+              </SidebarButton>
+              <SidebarButton route="/table-map" isSubButton={true}>
+                <MapIcon className={classes.buttonIcon} />
+                Table Map
+              </SidebarButton>
+            </Collapse>
+            <SidebarButton route="/guestlist">
+              <GuestListIcon className={classes.buttonIcon} />
+              Guest List
+            </SidebarButton>
+            <SidebarButton onClick={handleMarketingClick} hasSubButtons={true}>
+              <MarketingIcon className={classes.buttonIcon} />
+              Marketing
+              {openMarketing ? <ExpandLess /> : <ExpandMore />}
+            </SidebarButton>
+            <Collapse in={openMarketing} timeout={300} unmountOnExit>
+              <SidebarButton route="/campaigns/list/done" isSubButton={true}>
+                <ConnectIcon className={classes.buttonIcon} />
+                Vemos Connect
+              </SidebarButton>
+              <SidebarButton route="/referrers" isSubButton={true}>
+                <ShareIcon className={classes.buttonIcon} />
+                Referrers
+              </SidebarButton>
+            </Collapse>
+            <SidebarButton route="/guests">
+              <GroupIcon className={classes.buttonIcon} />
+              Guest Profiles
+            </SidebarButton>
+            <SidebarButton onClick={handleIDClick} hasSubButtons={true}>
+              <IDIcon className={classes.buttonIcon} />
+              ID Scan
+              {openID ? <ExpandLess /> : <ExpandMore />}
+            </SidebarButton>
+            <Collapse in={openID} timeout={300} unmountOnExit>
+              <SidebarButton route="/id-scan/history/" isSubButton={true}>
+                <DayIcon className={classes.buttonIcon} />
+                Day History
+              </SidebarButton>
+              <SidebarButton route="/id-scan/bans" isSubButton={true}>
+                <BlockIcon className={classes.buttonIcon} />
+                Ban List
+              </SidebarButton>
+            </Collapse>
           </List>
         </Collapse>
       </List>

@@ -117,6 +117,34 @@ export default function Header({ isLoggedIn }) {
     }
   ];
 
+  const upgradeItems = [
+    {
+      route: '/upgrades/Reports',
+      text: 'Automated Reports',
+      icon: ReportIcon
+    },
+    {
+      route: '/upgrades/dataoperations',
+      text: 'Data Operation',
+      icon: DataIcon
+    },
+    {
+      route: '/upgrades/id-scan',
+      text: 'ID Scan',
+      icon: IDIcon
+    },
+    {
+      route: '/upgrades/pos-integration',
+      text: 'POS Integration',
+      icon: POSIcon
+    },
+    {
+      route: '/upgrades/vemos-connect',
+      text: 'Vemos Connect',
+      icon: ConnectIcon
+    }
+  ];
+
   function handleUpgradeClose() {
     setAnchorUpgrade(null);
   }
@@ -183,26 +211,20 @@ export default function Header({ isLoggedIn }) {
               open={Boolean(anchorUpgrade)}
               onClose={handleUpgradeClose}
             >
-              <TopBarButton route="/upgrades/Reports" isMenuItem={true}>
-                <ReportIcon className={classes.buttonIcon} />
-                Automated Reports
-              </TopBarButton>
-              <TopBarButton route="/upgrades/dataoperations" isMenuItem={true}>
-                <DataIcon className={classes.buttonIcon} />
-                Data Operation
-              </TopBarButton>
-              <TopBarButton route="/upgrades/id-scan" isMenuItem={true}>
-                <IDIcon className={classes.buttonIcon} />
-                ID Scan
-              </TopBarButton>
-              <TopBarButton route="/upgrades/pos-integration" isMenuItem={true}>
-                <POSIcon className={classes.buttonIcon} />
-                POS Integration
-              </TopBarButton>
-              <TopBarButton route="/upgrades/vemos-connect" isMenuItem={true}>
-                <ConnectIcon className={classes.buttonIcon} />
-                Vemos Conect
-              </TopBarButton>
+              {upgradeItems.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <TopBarButton
+                    key={index}
+                    route={item.route}
+                    isMenuItem={true}
+                  >
+                    <Icon className={classes.buttonIcon} />
+                    {item.text}
+                  </TopBarButton>
+                );
+              })}
             </TopBarMenu>
             <TopBarButton
               aria-controls="settings-menu"
@@ -305,36 +327,22 @@ export default function Header({ isLoggedIn }) {
               {openUpgrade ? <ExpandLess /> : <ExpandMore />}
             </TopBarButton>
             <Collapse in={openUpgrade} timeout={300} unmountOnExit>
-              <TopBarButton route="/upgrades/Reports" isMenuItem={true}>
-                <Box display="flex" ml={1} color="white">
-                  <ReportIcon className={classes.buttonIcon} />
-                  Automated Reports
-                </Box>
-              </TopBarButton>
-              <TopBarButton route="/upgrades/dataoperations" isMenuItem={true}>
-                <Box display="flex" ml={1} color="white">
-                  <DataIcon className={classes.buttonIcon} />
-                  Data Operation
-                </Box>
-              </TopBarButton>
-              <TopBarButton route="/upgrades/id-scan" isMenuItem={true}>
-                <Box display="flex" ml={1} color="white">
-                  <IDIcon className={classes.buttonIcon} />
-                  ID Scan
-                </Box>
-              </TopBarButton>
-              <TopBarButton route="/upgrades/pos-integration" isMenuItem={true}>
-                <Box display="flex" ml={1} color="white">
-                  <POSIcon className={classes.buttonIcon} />
-                  POS Integration
-                </Box>
-              </TopBarButton>
-              <TopBarButton route="/upgrades/vemos-connect" isMenuItem={true}>
-                <Box display="flex" ml={1} color="white">
-                  <ConnectIcon className={classes.buttonIcon} />
-                  Vemos Conect
-                </Box>
-              </TopBarButton>
+              {upgradeItems.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <TopBarButton
+                    key={index}
+                    kroute={item.route}
+                    isMenuItem={true}
+                  >
+                    <Box display="flex" ml={1} color="white">
+                      <Icon className={classes.buttonIcon} />
+                      {item.text}
+                    </Box>
+                  </TopBarButton>
+                );
+              })}
             </Collapse>
             <TopBarButton
               aria-controls="settings-menu"

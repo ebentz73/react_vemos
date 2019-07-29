@@ -109,6 +109,39 @@ function Navbar({ venue }) {
     setOpenID(!openID);
   }
 
+  const analyticsArray = [
+    {
+      route: '/analytics',
+      text: 'Real Time',
+      icon: WatchLaterIcon
+    },
+    {
+      route: `/analytics/${thirtyDaysAgo}/${currentDate}`,
+      text: 'Venue',
+      icon: VenueIcon
+    },
+    {
+      route: `/analytics/${thirtyDaysAgo}/${currentDate}/reservations`,
+      text: 'Reservations',
+      icon: ReservationIcon
+    },
+    {
+      route: `/analytics/${thirtyDaysAgo}/${currentDate}/guests`,
+      text: 'Guests',
+      icon: GroupIcon
+    },
+    {
+      route: `/analytics/events/${venue.id}`,
+      text: 'Events',
+      icon: EventIcon
+    },
+    {
+      route: `/analytics/${thirtyDaysAgo}/${currentDate}/referrers`,
+      text: 'Marketing',
+      icon: MarketingIcon
+    }
+  ];
+
   const drawer = (
     <Box>
       <Box className={classes.toolbar} />
@@ -129,36 +162,16 @@ function Navbar({ venue }) {
           {openAnalytics ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openAnalytics} timeout={500} unmountOnExit>
-          <SidebarButton route="/analytics">
-            <WatchLaterIcon className={classes.buttonIcon} />
-            Real Time
-          </SidebarButton>
-          <SidebarButton route={`/analytics/${thirtyDaysAgo}/${currentDate}`}>
-            <VenueIcon className={classes.buttonIcon} />
-            Venue
-          </SidebarButton>
-          <SidebarButton
-            route={`/analytics/${thirtyDaysAgo}/${currentDate}/reservations`}
-          >
-            <ReservationIcon className={classes.buttonIcon} />
-            Reservations
-          </SidebarButton>
-          <SidebarButton
-            route={`/analytics/${thirtyDaysAgo}/${currentDate}/guests`}
-          >
-            <GroupIcon className={classes.buttonIcon} />
-            Guests
-          </SidebarButton>
-          <SidebarButton route={`/analytics/events/${venue.id}`}>
-            <EventIcon className={classes.buttonIcon} />
-            Events
-          </SidebarButton>
-          <SidebarButton
-            route={`/analytics/${thirtyDaysAgo}/${currentDate}/referrers`}
-          >
-            <MarketingIcon className={classes.buttonIcon} />
-            Marketing
-          </SidebarButton>
+          {analyticsArray.map((item, index) => {
+            const Icon = item.icon;
+
+            return (
+              <SidebarButton key={index} route={item.route}>
+                <Icon className={classes.buttonIcon} />
+                {item.text}
+              </SidebarButton>
+            );
+          })}
           <SidebarButton
             route={`/transaction/?filters[start]=${thirtyDaysAgo}&filters[end]=${currentDate}`}
             externalLink={false}

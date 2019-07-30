@@ -66,30 +66,28 @@ export default function SidebarButton({
       }
     : {};
 
-  function innerButton() {
-    return (
-      <Button
-        classes={{
-          root: classes.buttonRoot,
-          label: classes.buttonLabel
-        }}
-        fullWidth={true}
-        color="secondary"
-        {...subButtonProps}
-        {...buttonProps}
-      >
-        {children}
-      </Button>
-    );
-  }
+  const innerButton = (
+    <Button
+      classes={{
+        root: classes.buttonRoot,
+        label: classes.buttonLabel
+      }}
+      fullWidth={true}
+      color="secondary"
+      {...subButtonProps}
+      {...buttonProps}
+    >
+      {children}
+    </Button>
+  );
 
   return (
     <Box className={classes.container} {...rest}>
       {hasSubButtons ? (
-        innerButton()
+        innerButton
       ) : (
         <Link href={to} underline="none">
-          {innerButton()}
+          {innerButton}
         </Link>
       )}
     </Box>

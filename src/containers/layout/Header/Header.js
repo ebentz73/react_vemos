@@ -98,64 +98,62 @@ export default function Header({ isLoggedIn }) {
     setUserCollapse(!openUser);
   }
 
-  function showTopMenus() {
-    return (
-      <>
-        <Hidden smDown>
-          <Box display="flex">
-            <TopBarButton route="/analytics" isMenuItem={true}>
-              <Box component="span" display="flex" color="white">
-                <Box mr={1}>
-                  <DashboardIcon />
-                </Box>
-                Dashboard
+  const showTopMenus = (
+    <>
+      <Hidden smDown>
+        <Box display="flex">
+          <TopBarButton route="/analytics" isMenuItem={true}>
+            <Box component="span" display="flex" color="white">
+              <Box mr={1}>
+                <DashboardIcon />
               </Box>
-            </TopBarButton>
+              Dashboard
+            </Box>
+          </TopBarButton>
 
-            <TopBarMenu
-              text="Upgrades"
-              anchorEl={anchorUpgrade}
-              handleMenuClick={handleUpgradeClick}
-              handleMenuClose={handleUpgradeClose}
-              Icon={UpdateIcon}
-              menuItems={upgradeItems}
-            />
+          <TopBarMenu
+            text="Upgrades"
+            anchorEl={anchorUpgrade}
+            handleMenuClick={handleUpgradeClick}
+            handleMenuClose={handleUpgradeClose}
+            Icon={UpdateIcon}
+            menuItems={upgradeItems}
+          />
 
-            <TopBarMenu
-              text="Settings"
-              anchorEl={anchorSetting}
-              handleMenuClick={handleSettingClick}
-              handleMenuClose={handleSettingClose}
-              Icon={SettingsIcon}
-              menuItems={settingItems}
-            />
+          <TopBarMenu
+            text="Settings"
+            anchorEl={anchorSetting}
+            handleMenuClick={handleSettingClick}
+            handleMenuClose={handleSettingClose}
+            Icon={SettingsIcon}
+            menuItems={settingItems}
+          />
 
-            <TopBarMenu
-              text="User"
-              anchorEl={anchorUser}
-              handleMenuClick={handleUserClick}
-              handleMenuClose={handleUserClose}
-              Icon={UserIcon}
-              menuItems={userItems}
-            />
-          </Box>
-        </Hidden>
+          <TopBarMenu
+            text="User"
+            anchorEl={anchorUser}
+            handleMenuClick={handleUserClick}
+            handleMenuClose={handleUserClose}
+            Icon={UserIcon}
+            menuItems={userItems}
+          />
+        </Box>
+      </Hidden>
 
-        <Hidden mdUp>
-          <Box mr={2}>
-            <IconButton
-              edge="end"
-              color="inherit"
-              aria-label="Menu"
-              onClick={handleTopbarToggle}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-        </Hidden>
-      </>
-    );
-  }
+      <Hidden mdUp>
+        <Box mr={2}>
+          <IconButton
+            edge="end"
+            color="inherit"
+            aria-label="Menu"
+            onClick={handleTopbarToggle}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Box>
+      </Hidden>
+    </>
+  );
 
   return (
     <AppBar position="static" className={classes.appBar}>
@@ -171,7 +169,7 @@ export default function Header({ isLoggedIn }) {
             />
           </Box>
           {!isLoggedIn && <Button color="inherit">Login</Button>}
-          {isLoggedIn && showTopMenus()}
+          {isLoggedIn && showTopMenus}
         </Box>
         <Collapse
           in={openMobileTopBar}

@@ -6,8 +6,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Header from '@containers/layout/Header';
-import Navbar from '@containers/layout/Navbar';
+import Header from '@containers/layout/Header/Header';
+import Navbar from '@containers/layout/Navbar/Navbar';
 import Notifier from '@containers/layout/Notifier';
 import Login from '@pages/Login';
 import Home from '@pages/Home';
@@ -46,14 +46,11 @@ class App extends Component {
 
   renderUserRoutes() {
     return (
-      <React.Fragment>
-        <Navbar />
-        <Switch>
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/transaction" component={Transaction} />
-          <Route render={() => <Redirect to="/transaction" />} />
-        </Switch>
-      </React.Fragment>
+      <Switch>
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/transaction" component={Transaction} />
+        <Route render={() => <Redirect to="/transaction" />} />
+      </Switch>
     );
   }
 
@@ -101,6 +98,7 @@ class App extends Component {
     return (
       <MainContainer>
         <Header isLoggedIn={isLoggedIn} />
+        {isLoggedIn && <Navbar />}
         {this.renderLoadingBar()}
         {loaded ? this.renderContent() : this.renderLoading()}
         <Notifier />

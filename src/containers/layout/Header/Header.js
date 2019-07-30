@@ -15,8 +15,8 @@ import Collapse from '@material-ui/core/Collapse';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import LogoImg from '@assets/logo.png';
 import TopBarButton from '@containers/layout/Header/TopbarButton';
-import TopBarMenu from '@containers/layout/Header/TopBarMenu';
-import TopBarCollapse from '@containers/layout/Header/TopBarCollapse';
+import TopBarMenu from '@containers/layout/Header/TopbarMenu';
+import TopBarCollapse from '@containers/layout/Header/TopbarCollapse';
 import {
   settingItems,
   upgradeItems,

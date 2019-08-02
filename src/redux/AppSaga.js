@@ -1,11 +1,10 @@
 import { call, put } from 'redux-saga/effects';
 import Cookies from 'js-cookie';
-import history from '@utils/history';
-import { refreshToken } from './AuthSaga';
-import AppActions from './AppRedux';
+import history, { getDomain } from '@utils/history';
 import logger from '@utils/logger';
 import notifier from '@utils/notifier';
-import { getDomain } from '@utils/history';
+import { refreshToken } from './AuthSaga';
+import AppActions from './AppRedux';
 
 export function* startup() {
   yield put(AppActions.setLoading(true));

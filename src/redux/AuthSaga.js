@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import jwtDecode from 'jwt-decode';
 import { getAuth } from '@utils/firebase';
 import logger from '@utils/logger';
-import { request } from './ApiSaga';
+import { request } from '@api/FirebaseApi';
 import AuthActions from './AuthRedux';
 
 function signInCustomToken(token) {

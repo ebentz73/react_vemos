@@ -26,6 +26,7 @@ module.exports = {
           '@containers': './src/containers',
           '@pages': './src/pages',
           '@redux': './src/redux',
+          '@api': './src/api',
           '@utils': './src/utils'
         }
       }

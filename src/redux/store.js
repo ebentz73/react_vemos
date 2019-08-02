@@ -12,9 +12,11 @@ const enableMiddleware = (...middlewares) => {
   return compose(applyMiddleware(...middlewares));
 };
 
+let store;
+
 const configureStore = initialState => {
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
+  store = createStore(
     rootReducer,
     initialState,
     enableMiddleware(sagaMiddleware)
@@ -36,5 +38,7 @@ const configureStore = initialState => {
 
   return store;
 };
+
+export const getStore = () => store;
 
 export default configureStore;

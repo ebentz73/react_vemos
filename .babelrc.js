@@ -21,6 +21,7 @@ module.exports = {
           '@root': './',
           '@assets': './src/assets',
           '@config': './config',
+          '@constants': './src/constants',
           '@styles': './src/styles',
           '@components': './src/components',
           '@containers': './src/containers',

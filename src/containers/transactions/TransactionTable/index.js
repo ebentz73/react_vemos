@@ -19,11 +19,6 @@ TransactionTable.propTypes = {
 };
 
 // @TODO add filterables
-// 'Referrer' // filterable
-//  'Promo Code' // filterable
-//  'Server' // filterabe
-// revenueCenter, ordertype, voids,comps, tables, reservation // filterable
-
 function TransactionTable({
   transactions,
   // setTransactionFilter,
@@ -72,7 +67,6 @@ function TransactionTable({
     filterType: 'dropdown',
     responsive: 'stacked',
     search: false,
-    // viewColumns: false,
     print: false,
     rowsPerPageOptions: [10, 25, 50],
     onTableChange: handleTableChange

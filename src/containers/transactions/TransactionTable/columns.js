@@ -194,9 +194,6 @@ const columns = [
       )
     }
   }
-
-  // @TODO add filterables
-  // tables, reservation // filterable
 ];
 
 export default columns;

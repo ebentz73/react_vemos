@@ -29,9 +29,9 @@ export function* startup() {
     logger.debug('All Venues', allVenues);
 
     if (selectedVenue && allVenues) {
-      const { token, id } = selectedVenue;
+      const { token } = selectedVenue;
 
-      yield call(refreshToken, token, id);
+      yield call(refreshToken, token, selectedVenue);
     } else {
       history.push('/auth/login');
     }

@@ -1,4 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
+import get from 'lodash/get';
 
 const { Types, Creators } = createActions({
   setToken: ['token'],
@@ -24,6 +25,7 @@ export const AuthSelectors = {
   selectUser: state => state.auth.user,
   selectToken: state => state.auth.token,
   selectCurrentVenue: state => state.auth.venue,
+  selectVenueId: state => get(state, 'auth.venue.id'),
   selectAllVenues: state => state.auth.allVenues,
   selectLoggedIn: state => !!state.auth.token
 };

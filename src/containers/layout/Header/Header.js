@@ -175,7 +175,7 @@ export default function Header({ isLoggedIn }) {
           in={openMobileTopBar}
           timeout={300}
           unmountOnExit
-          className={{ container: classes.mobileCollapse }}
+          classes={{ container: classes.mobileCollapse }}
         >
           <Box display="flex" flexDirection="column" width={1}>
             <TopBarButton route="/dashboard" isMenuItem={true}>

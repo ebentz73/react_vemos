@@ -21,11 +21,13 @@ module.exports = {
           '@root': './',
           '@assets': './src/assets',
           '@config': './config',
+          '@constants': './src/constants',
           '@styles': './src/styles',
           '@components': './src/components',
           '@containers': './src/containers',
           '@pages': './src/pages',
           '@redux': './src/redux',
+          '@api': './src/api',
           '@utils': './src/utils'
         }
       }

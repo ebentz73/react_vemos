@@ -1,11 +1,12 @@
 import { call, put } from 'redux-saga/effects';
 import jwtDecode from 'jwt-decode';
+import Cookies from 'js-cookie';
 import { getAuth } from '@utils/firebase';
 import logger from '@utils/logger';
-import { request } from './ApiSaga';
+import { request } from '@api/FirebaseApi';
 import AuthActions from './AuthRedux';
 
-function signInCustomToken(token) {
+export function signInCustomToken(token) {
   const auth = getAuth();
 
   return auth
@@ -16,32 +17,45 @@ function signInCustomToken(token) {
     });
 }
 
-export function* refreshToken(token, venueId) {
-  const decoded = jwtDecode(token);
-  const result = yield call(
-    request,
-    'user/refresh-token',
-    {
-      token
-    },
-    {
-      user: decoded.uid,
-      venue: venueId
-    }
-  );
-  const currentVenue = result[venueId];
-
+export function* refreshToken(token, venue) {
   try {
-    yield call(signInCustomToken, currentVenue.token);
+    const decoded = jwtDecode(token);
+    let result;
+    let currentVenue = venue;
 
+    // make request only if token is expired
+    if (Date.now() > decoded.exp * 1000) {
+      result = yield call(
+        request,
+        'user/refresh-token',
+        {
+          token
+        },
+        {
+          user: decoded.uid,
+          venue: venue.id
+        }
+      );
+      currentVenue = result[venue.id];
+    }
+
+    yield call(signInCustomToken, currentVenue.token);
     yield put(AuthActions.setToken(currentVenue.token));
     yield put(
       AuthActions.setCurrentVenue({
         ...currentVenue,
-        id: venueId
+        id: venue.id
       })
     );
     yield put(AuthActions.setUser(decoded));
+
+    if (currentVenue) {
+      // setting cookie
+      Cookies.set(process.env.WEB_APP_URL + '_selected', {
+        ...currentVenue,
+        id: venue.id
+      });
+    }
   } catch (e) {
     logger.error(e);
     throw e;

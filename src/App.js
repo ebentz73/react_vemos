@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Header from '@containers/layout/Header/Header';
-import Navbar from '@containers/layout/Navbar/Navbar';
+// import Navbar from '@containers/layout/Navbar/Navbar';
 import Notifier from '@containers/layout/Notifier';
 import Login from '@pages/Login';
 import Home from '@pages/Home';
@@ -48,8 +48,8 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path="/home" component={Home} />
-        <Route exact path="/transaction" component={Transaction} />
-        <Route render={() => <Redirect to="/transaction" />} />
+        <Route exact path="/transactions" component={Transaction} />
+        <Route render={() => <Redirect to="/transactions" />} />
       </Switch>
     );
   }
@@ -98,7 +98,7 @@ class App extends Component {
     return (
       <MainContainer>
         <Header isLoggedIn={isLoggedIn} />
-        {isLoggedIn && <Navbar />}
+        {/* {isLoggedIn && <Navbar />} */}
         {this.renderLoadingBar()}
         {loaded ? this.renderContent() : this.renderLoading()}
         <Notifier />

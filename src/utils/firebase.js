@@ -25,3 +25,23 @@ export function getFirestore() {
 export function getFirebaseRef() {
   return firebase.database().ref();
 }
+
+export function getFirebaseValue(path, type = 'fs') {
+  if (type === 'fs') {
+    return getFirestore()
+      .doc(path)
+      .get()
+      .then(doc => {
+        const data = doc.data();
+        return data;
+      });
+  } else {
+    return getFirebaseRef()
+      .child(path)
+      .once('value')
+      .then(snap => {
+        const data = snap.val();
+        return data;
+      });
+  }
+}

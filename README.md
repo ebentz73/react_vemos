@@ -59,6 +59,12 @@ $ yarn run analyzer
 
 ## Release Instructions
 
+Commits to `develop` and `master` branches are auto-deployed to sandbox and production environment respectively.
+
+During development cycle, create a feature branch and submit PR to `develop`, make release and release to production.
+
+Below commands are used ONLY for manual deployments.
+
 ### Build command
 
 ```sh

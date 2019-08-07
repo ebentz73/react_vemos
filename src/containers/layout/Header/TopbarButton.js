@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Box, Link } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 
 TopbarButton.propTypes = {
@@ -39,14 +41,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TopbarButton({
-  isMenuItem,
-  route,
-  externalLink,
-  children,
-  buttonProps,
-  ...rest
-}) {
+function TopbarButton(
+  { isMenuItem, route, externalLink, children, buttonProps, ...rest },
+  ref
+) {
   const classes = useStyles();
   const to = externalLink
     ? `https://${process.env.WEB_APP_URL + route}`
@@ -57,31 +55,31 @@ export default function TopbarButton({
         color: 'inherit'
       };
 
-  function innerButton() {
-    return (
-      <Button
-        classes={{
-          root: classes.buttonRoot,
-          label: classes.buttonLabel
-        }}
-        fullWidth={true}
-        {...conditionalProps}
-        {...buttonProps}
-      >
-        {children}
-      </Button>
-    );
-  }
+  const innerButton = (
+    <Button
+      classes={{
+        root: classes.buttonRoot,
+        label: classes.buttonLabel
+      }}
+      fullWidth={true}
+      {...conditionalProps}
+      {...buttonProps}
+    >
+      {children}
+    </Button>
+  );
 
   return (
-    <Box display="flex" className={classes.container} {...rest}>
+    <Box ref={ref} display="flex" className={classes.container} {...rest}>
       {isMenuItem ? (
         <Link href={to} underline="none" className={classes.link}>
-          {innerButton()}
+          {innerButton}
         </Link>
       ) : (
-        innerButton()
+        innerButton
       )}
     </Box>
   );
 }
+
+export default forwardRef(TopbarButton);

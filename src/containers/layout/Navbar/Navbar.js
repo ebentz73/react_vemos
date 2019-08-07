@@ -78,6 +78,8 @@ function Navbar({ venue }) {
     setOpenID(!openID);
   }
 
+  const transactionsLink = `/transactions?filters[start]=${thirtyDaysAgo}&filters[end]=${currentDate}`; // eslint-disable-line
+
   const drawer = (
     <Box>
       <Box className={classes.toolbar} />
@@ -112,10 +114,7 @@ function Navbar({ venue }) {
               </SidebarButton>
             );
           })}
-          <SidebarButton
-            route={`/transaction/?filters[start]=${thirtyDaysAgo}&filters[end]=${currentDate}`}
-            externalLink={false}
-          >
+          <SidebarButton route={transactionsLink} externalLink={false}>
             <Box mr={2} ml={2}>
               <TransactionIcon />
             </Box>

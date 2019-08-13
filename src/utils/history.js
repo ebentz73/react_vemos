@@ -11,7 +11,7 @@ export const getDomain = () => {
   const domainParts = window.location.host.split('.');
   const domain = domainParts.slice(domainParts.length - 2).join('.');
 
-  return domain;
+  return domain.split(':')[0];
 };
 
 export function getPathname() {

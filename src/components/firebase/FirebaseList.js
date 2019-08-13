@@ -1,64 +1,28 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { AuthSelectors } from '@redux/AuthRedux';
+import { AsyncList } from '@components/common';
 import { getFirebaseValue } from '@utils/firebase';
-import logger from '@utils/logger';
-
-// import Skeleton from '@material-ui/lab/Skeleton';
 
 FirebaseList.propTypes = {
-  ids: PropTypes.array,
   type: PropTypes.oneOf(['fs', 'rtdb']), // firestore or rtdb
-  getPath: PropTypes.func.isRequired,
-  empty: PropTypes.node,
-  venueId: PropTypes.string,
-  transform: PropTypes.func.isRequired
+  getPath: PropTypes.func.isRequired
 };
 
 FirebaseList.defaultProps = {
   type: 'rtdb',
-  transform: data => (typeof data === 'string' ? data : null),
-  getPath: () => null,
-  empty: null
+  getPath: () => null
 };
 
-function FirebaseList({ ids, getPath, type, venueId, empty, transform }) {
-  const [value, setValue] = useState([]);
-
-  const loadValue = id => {
+function FirebaseList({ getPath, type, ...rest }) {
+  const loadData = (venueId, id) => {
     if (!id) {
       return Promise.resolve(null);
     }
 
-    return getFirebaseValue(getPath(venueId, id), type).catch(e => {
-      logger.error(e);
-      return null;
-    });
+    return getFirebaseValue(getPath(venueId, id), type);
   };
 
-  useEffect(() => {
-    setValue([]);
-    if (ids && ids.length) {
-      Promise.all(ids.map(id => loadValue(id)))
-        .then(data => data.filter(d => d))
-        .then(data => setValue(data));
-    }
-  }, [ids]);
-
-  // if (ids && ids.length && (!value || !value.length)) {
-  //   return <Skeleton />;
-  // }
-
-  if (!value || !value.length) {
-    return empty;
-  }
-
-  return transform(value);
+  return <AsyncList loadData={loadData} {...rest} />;
 }
 
-const mapStatesToProps = state => ({
-  venueId: AuthSelectors.selectVenueId(state)
-});
-
-export default connect(mapStatesToProps)(FirebaseList);
+export default FirebaseList;

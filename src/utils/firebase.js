@@ -26,7 +26,7 @@ export function getFirebaseRef() {
   return firebase.database().ref();
 }
 
-export function getFirebaseValue(path, type = 'fs') {
+export function getFirebaseValue(path, type = 'rtdb') {
   if (type === 'fs') {
     return getFirestore()
       .doc(path)
@@ -44,4 +44,18 @@ export function getFirebaseValue(path, type = 'fs') {
         return data;
       });
   }
+}
+
+export function getSuggestions(
+  path,
+  { query, orderBy, orderByKey = [], limit }
+) {
+  return getFirebaseRef()
+    .child(path)
+    [orderBy](...orderByKey)
+    .startAt(query)
+    .endAt(`${query}\uf8ff`)
+    .limitToFirst(limit)
+    .once('value')
+    .then(snap => snap.val());
 }

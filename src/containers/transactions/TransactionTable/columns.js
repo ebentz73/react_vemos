@@ -1,9 +1,26 @@
 import React from 'react';
-import { FirebaseText, FirebaseList } from '@components/firebase';
 import moment from 'moment';
-import PAYMENT_METHODS from '@constants/payment-methods';
-import TRANSACTION_TYPES from '@constants/transaction-types';
+import {
+  FirebaseText,
+  FirebaseList,
+  GuestAsyncSelect
+} from '@components/firebase';
+import { AsyncList, AsyncText, AsyncOptionSelect } from '@components/common';
 import { getPrice } from '@utils/currency';
+import {
+  numberRange,
+  firebaseSingle,
+  firebaseMulti,
+  textMulti
+} from '@components/filters/mui-table';
+import * as ServerService from '@services/ServerService';
+import * as PromoService from '@services/PromoService';
+import {
+  PAYMENT_METHODS,
+  TRANSACTION_TYPES,
+  HAS_RESERVATION,
+  REFUNDED
+} from '@containers/transactions/constants';
 
 const columns = [
   {
@@ -19,7 +36,8 @@ const columns = [
     label: 'Type',
     options: {
       filter: true,
-      customBodyRender: value => TRANSACTION_TYPES[value]
+      customBodyRender: value => TRANSACTION_TYPES[value],
+      ...textMulti('Transction Type', TRANSACTION_TYPES)
     }
   },
   {
@@ -35,7 +53,19 @@ const columns = [
           getPath={(venueId, id) => `venues/${venueId}/guests/${id}`}
           transform={guest => `${guest.firstName} ${guest.lastName}`}
         />
-      )
+      ),
+      filterType: 'custom',
+      customFilterListRender: v =>
+        v[0] ? `Guest: ${v[0].firstName} ${v[0].lastName}` : null,
+      filterOptions: {
+        display: (filterList, onChange, index, column) => (
+          <GuestAsyncSelect
+            label="Guest"
+            value={filterList[index][0]}
+            onChange={v => onChange(v ? [v] : [], index, column)}
+          />
+        )
+      }
     }
   },
   {
@@ -43,7 +73,8 @@ const columns = [
     label: 'Payment method',
     options: {
       filter: true,
-      customBodyRender: value => PAYMENT_METHODS[value]
+      customBodyRender: value => PAYMENT_METHODS[value],
+      ...textMulti('Payment Method', PAYMENT_METHODS)
     }
   },
   {
@@ -51,7 +82,8 @@ const columns = [
     label: 'Amount',
     options: {
       filter: true,
-      customBodyRender: value => getPrice(value)
+      customBodyRender: value => getPrice(value),
+      ...numberRange('Amount')
     }
   },
   {
@@ -59,14 +91,16 @@ const columns = [
     label: 'Refunded',
     options: {
       filter: true,
-      customBodyRender: value => (value ? 'Refunded' : '')
+      customBodyRender: value => (value ? 'Refunded' : ''),
+      filterOptions: {
+        names: [REFUNDED.YES, REFUNDED.NO]
+      }
     }
   },
   {
     name: 'referrer_id',
     label: 'Referrer',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
@@ -74,6 +108,11 @@ const columns = [
           id={value}
           getPath={(venueId, id) => `venues/${venueId}/referrers/${id}/name`}
         />
+      ),
+      ...firebaseSingle(
+        'Referrer',
+        venueId => `venues/${venueId}/referrers`,
+        referrer => referrer.name
       )
     }
   },
@@ -81,40 +120,65 @@ const columns = [
     name: 'promocode_id',
     label: 'Promo Code',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
-        <FirebaseText
-          id={value}
-          getPath={(venueId, id) => `venues/${venueId}/promotions/${id}/name`}
+        <AsyncText
+          ids={(value || []).map(s => s.promocode_id)}
+          loadData={(venueId, id) => PromoService.getPromo(venueId, id)}
+          transform={promo => promo.name}
         />
-      )
+      ),
+      filterType: 'custom',
+      customFilterListRender: v => (v[0] ? `Promo Code: ${v[0].name}` : null),
+      filterOptions: {
+        display: (filterList, onChange, index, column) => (
+          <AsyncOptionSelect
+            label="Promo Code"
+            loadOptions={venueId => PromoService.getVenuePromos(venueId)}
+            getOptionLabel={p => p.name}
+            onChange={v => onChange(v ? [v] : [], index, column)}
+            value={filterList[index][0]}
+          />
+        )
+      }
     }
   },
   {
     name: 'servers',
     label: 'Servers',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
-        <FirebaseList
+        <AsyncList
           ids={(value || []).map(s => s.server_id)}
-          getPath={(venueId, id) => `venues/${venueId}/pos/employees/${id}`}
+          loadData={(venueId, id) => ServerService.getServer(venueId, id)}
           transform={servers =>
-            servers.map(s => `${s.first_name} ${s.last_name}`).join(', ')
+            servers.map(s => ServerService.getName(s)).join(', ')
           }
         />
-      )
+      ),
+      filterType: 'custom',
+      customFilterListRender: v =>
+        v[0] ? `Server: ${ServerService.getName(v[0])}` : null,
+      filterOptions: {
+        display: (filterList, onChange, index, column) => (
+          <AsyncOptionSelect
+            label="Server"
+            loadOptions={venueId => ServerService.getVenueServers(venueId)}
+            getOptionLabel={s => ServerService.getName(s)}
+            onChange={v => onChange(v ? [v] : [], index, column)}
+            value={filterList[index][0]}
+          />
+        )
+      }
     }
   },
   {
     name: 'revenue_center_id',
     label: 'Revenue Center',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
@@ -124,6 +188,11 @@ const columns = [
             `venues/${venueId}/pos/revenue_centers/${id}/name`
           }
         />
+      ),
+      ...firebaseMulti(
+        'Revenue Center',
+        venueId => `venues/${venueId}/pos/revenue_centers`,
+        c => c.name
       )
     }
   },
@@ -131,7 +200,6 @@ const columns = [
     name: 'order_type_id',
     label: 'Order Type',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
@@ -141,6 +209,11 @@ const columns = [
             `venues/${venueId}/pos/order_types/${id}/name`
           }
         />
+      ),
+      ...firebaseMulti(
+        'Order Type',
+        venueId => `venues/${venueId}/pos/order_types`,
+        c => c.name
       )
     }
   },
@@ -148,33 +221,37 @@ const columns = [
     name: 'amount_voided',
     label: 'Voided',
     options: {
-      display: false,
       filter: true,
-      customBodyRender: value => (value ? getPrice(value) : null)
+      customBodyRender: value => (value ? getPrice(value) : null),
+      ...numberRange('Voids')
     }
   },
   {
     name: 'amount_comped',
     label: 'Comps',
     options: {
-      display: false,
       filter: true,
-      customBodyRender: value => (value ? getPrice(value) : null)
+      customBodyRender: value => (value ? getPrice(value) : null),
+      ...numberRange('Comps')
     }
   },
   {
     name: 'tables',
     label: 'Tables',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
         <FirebaseList
           ids={(value || []).map(s => s.table_id)}
-          getPath={(venueId, id) => `venues/${venueId}/tables/${id}/number`}
-          transform={tableNumbers => tableNumbers.join(', ')}
+          getPath={(venueId, id) => `venues/${venueId}/tables/${id}/label`}
+          transform={tableLabels => tableLabels.join(', ')}
         />
+      ),
+      ...firebaseMulti(
+        'Tables',
+        venueId => `venues/${venueId}/tables`,
+        c => c.label
       )
     }
   },
@@ -182,7 +259,6 @@ const columns = [
     name: 'areas',
     label: 'Areas',
     options: {
-      display: false,
       sort: false,
       filter: true,
       customBodyRender: value => (
@@ -191,7 +267,24 @@ const columns = [
           getPath={(venueId, id) => `venues/${venueId}/areas/${id}/name`}
           transform={areas => areas.join(', ')}
         />
+      ),
+      ...firebaseMulti(
+        'Areas',
+        venueId => `venues/${venueId}/areas`,
+        c => c.name
       )
+    }
+  },
+  {
+    name: 'reservation_id',
+    label: 'Reservation',
+    options: {
+      sort: false,
+      filter: true,
+      customBodyRender: value => (value ? 'Yes' : ''),
+      filterOptions: {
+        names: [HAS_RESERVATION.YES, HAS_RESERVATION.NO]
+      }
     }
   }
 ];

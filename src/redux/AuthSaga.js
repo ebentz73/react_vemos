@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import jwtDecode from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { getDomain } from '@utils/history';
 import { getAuth } from '@utils/firebase';
 import logger from '@utils/logger';
 import { request } from '@api/FirebaseApi';
@@ -51,10 +52,17 @@ export function* refreshToken(token, venue) {
 
     if (currentVenue) {
       // setting cookie
-      Cookies.set(process.env.WEB_APP_URL + '_selected', {
-        ...currentVenue,
-        id: venue.id
-      });
+      const domain = getDomain();
+      Cookies.set(
+        process.env.WEB_APP_URL + '_selected',
+        {
+          ...currentVenue,
+          id: venue.id
+        },
+        {
+          domain
+        }
+      );
     }
   } catch (e) {
     logger.error(e);

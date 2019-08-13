@@ -42,6 +42,13 @@ const theme = createMuiTheme({
     MuiInputLabel: {
       shrink: true
     }
+  },
+  overrides: {
+    MuiGridListTile: {
+      tile: {
+        overflow: 'visible'
+      }
+    }
   }
 });
 

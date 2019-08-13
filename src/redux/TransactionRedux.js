@@ -5,6 +5,7 @@ const { Types, Creators } = createActions({
   setTransactions: ['transactions', 'count'],
   setTransactionFilter: ['filters'],
   setTransactionSorts: ['sorts'],
+  setTransactionDisplay: ['display'],
   setTransactionPagination: ['page', 'rowsPerPage']
 });
 
@@ -18,7 +19,17 @@ export const INITIAL_STATE = {
   count: 0,
   options: {
     filters: {},
-    sorts: {},
+    sorts: {
+      timestamp: 'desc'
+    },
+    display: {
+      timestamp: true,
+      transaction_type: true,
+      guest_id: true,
+      payment_method: true,
+      amount: true,
+      amount_refunded: true
+    },
     page: 0,
     rowsPerPage: 10
   }
@@ -48,6 +59,14 @@ export const setTransactionSorts = (state, { sorts }) => ({
   }
 });
 
+export const setTransactionDisplay = (state, { display }) => ({
+  ...state,
+  options: {
+    ...state.options,
+    display
+  }
+});
+
 export const setTransactionPagination = (state, { page, rowsPerPage }) => ({
   ...state,
   options: {
@@ -67,6 +86,7 @@ export const setTransactions = (state, { transactions, count }) => ({
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_TRANSACTION_FILTER]: setTransactionFilter,
   [Types.SET_TRANSACTION_SORTS]: setTransactionSorts,
+  [Types.SET_TRANSACTION_DISPLAY]: setTransactionDisplay,
   [Types.SET_TRANSACTION_PAGINATION]: setTransactionPagination,
   [Types.SET_TRANSACTIONS]: setTransactions
 });

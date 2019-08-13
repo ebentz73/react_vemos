@@ -15,13 +15,14 @@ TransactionTable.propTypes = {
   loadTransactions: PropTypes.func,
   setTransactionFilter: PropTypes.func,
   setTransactionSorts: PropTypes.func,
+  setTransactionDisplay: PropTypes.func,
   setTransactionPagination: PropTypes.func
 };
 
-// @TODO add filterables
 function TransactionTable({
   transactions,
-  // setTransactionFilter,
+  setTransactionDisplay,
+  setTransactionFilter,
   setTransactionSorts,
   setTransactionPagination,
   filterOptions,
@@ -45,11 +46,32 @@ function TransactionTable({
         setTransactionSorts(sorts);
         break;
       }
+      case 'columnViewChange': {
+        const display = options.columns
+          .filter(c => c.display)
+          .reduce(
+            (prev, current) => ({
+              ...prev,
+              [current.name]: current.display
+            }),
+            {}
+          );
+        setTransactionDisplay(display);
+        break;
+      }
       case 'changeRowsPerPage':
       case 'changePage':
         setTransactionPagination(options.page, options.rowsPerPage);
         break;
-      case 'filterChange': // @TODO
+      case 'resetFilters':
+      case 'filterChange':
+        setTransactionFilter(
+          options.filterList.reduce((prev, current, index) => ({
+            ...prev,
+            [options.columns[index].name]: current
+          })),
+          {}
+        );
         break;
       default:
         return;
@@ -58,10 +80,18 @@ function TransactionTable({
     loadTransactions();
   };
 
+  const handleFilterChange = changedCol => {
+    setTransactionDisplay({
+      ...filterOptions.display,
+      [changedCol]: true
+    });
+  };
+
   const TABLE_OPTIONS = {
     count,
     page: filterOptions.page,
     rowsPerPage: filterOptions.rowsPerPage,
+    selectableRows: 'none',
     filter: true,
     serverSide: true,
     filterType: 'dropdown',
@@ -69,6 +99,7 @@ function TransactionTable({
     search: false,
     print: false,
     rowsPerPageOptions: [10, 25, 50],
+    onFilterChange: handleFilterChange, // only used for displaying filtered col
     onTableChange: handleTableChange
   };
 
@@ -76,6 +107,8 @@ function TransactionTable({
     ...c,
     options: {
       ...c.options,
+      display: filterOptions.display[c.name],
+      filterList: filterOptions.filters[c.name] || [],
       sortDirection: filterOptions.sorts[c.name]
     }
   }));
@@ -97,6 +130,8 @@ const mapStatesToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  setTransactionDisplay: display =>
+    dispatch(TransactionActions.setTransactionDisplay(display)),
   setTransactionSorts: sorts =>
     dispatch(TransactionActions.setTransactionSorts(sorts)),
   setTransactionFilter: filter =>

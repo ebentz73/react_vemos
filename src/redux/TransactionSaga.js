@@ -3,13 +3,14 @@ import request from '@api/RestApi';
 import TransactionActions, {
   TransactionSelectors
 } from '@redux/TransactionRedux';
+import transformFilters from '@containers/transactions/TransactionTable/transformFilters';
 
 export function* loadTransactions() {
   // @TODO use filters
   const options = yield select(TransactionSelectors.selectTransactionOptions);
 
   const resp = yield call(request, 'listTransactions', {
-    where: options.filters,
+    where: transformFilters(options.filters),
     order: Object.keys(options.sorts).map(key => [key, options.sorts[key]]),
     offset: options.page * options.rowsPerPage,
     limit: options.rowsPerPage

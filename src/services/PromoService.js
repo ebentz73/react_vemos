@@ -29,6 +29,10 @@ export function getPromo(venue, id) {
   });
 }
 
+export function getAdmissionPromotion(venue, id) {
+  return getFirebaseValue(`venues/${venue}/promotions/${id}`);
+}
+
 export function getVenuePromos(venue) {
   return Promise.all([
     getFirebaseValue(`venues/${venue}/promos`),

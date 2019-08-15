@@ -6,6 +6,7 @@ import TransactionActions, {
   TransactionSelectors
 } from '@redux/TransactionRedux';
 import logger from '@utils/logger';
+import ExpandableRow from './ExpandableRow';
 import COLUMNS from './columns';
 
 TransactionTable.propTypes = {
@@ -98,7 +99,16 @@ function TransactionTable({
     responsive: 'stacked',
     search: false,
     print: false,
+    expandableRows: true,
+    expandableRowsOnClick: true,
     rowsPerPageOptions: [10, 25, 50],
+    renderExpandableRow: (rowData, rowMeta) => (
+      <ExpandableRow
+        rowData={rowData}
+        rowMeta={rowMeta}
+        transaction={transactions[rowMeta.dataIndex]}
+      />
+    ),
     onFilterChange: handleFilterChange, // only used for displaying filtered col
     onTableChange: handleTableChange
   };

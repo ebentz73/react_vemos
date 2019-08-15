@@ -99,6 +99,7 @@ export function textMulti(label, optionMap) {
           TextFieldProps={{ label, variant: 'standard' }}
           value={filterList[index]}
           onChange={v => onChange(v || [], index, column)}
+          isMulti
         />
       )
     }

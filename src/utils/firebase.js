@@ -26,13 +26,29 @@ export function getFirebaseRef() {
   return firebase.database().ref();
 }
 
-export function getFirebaseValue(path, type = 'rtdb') {
+export function objectToArray(obj) {
+  if (!obj) {
+    return [];
+  }
+
+  return Object.keys(obj).map(key => ({
+    _id: key,
+    ...obj[key]
+  }));
+}
+
+export function getFirebaseValue(path, type = 'rtdb', isArray = false) {
   if (type === 'fs') {
     return getFirestore()
       .doc(path)
       .get()
       .then(doc => {
         const data = doc.data();
+
+        if (isArray) {
+          return objectToArray(data);
+        }
+
         return data;
       });
   } else {
@@ -41,6 +57,11 @@ export function getFirebaseValue(path, type = 'rtdb') {
       .once('value')
       .then(snap => {
         const data = snap.val();
+
+        if (isArray) {
+          return objectToArray(data);
+        }
+
         return data;
       });
   }

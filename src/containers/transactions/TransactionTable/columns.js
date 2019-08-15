@@ -28,7 +28,7 @@ const columns = [
     label: 'Date',
     options: {
       filter: true,
-      customBodyRender: value => moment(value).format('MM/DD/YYYY HH:mm A')
+      customBodyRender: value => moment(value).format('MM/DD/YYYY hh:mm A')
     }
   },
   {

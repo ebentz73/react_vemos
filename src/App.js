@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Header from '@containers/layout/Header/Header';
-// import Navbar from '@containers/layout/Navbar/Navbar';
+import Navbar from '@containers/layout/Navbar/Navbar';
 import Notifier from '@containers/layout/Notifier';
 import Login from '@pages/Login';
 import Home from '@pages/Home';
@@ -98,9 +98,13 @@ class App extends Component {
     return (
       <MainContainer>
         <Header isLoggedIn={isLoggedIn} />
-        {/* {isLoggedIn && <Navbar />} */}
         {this.renderLoadingBar()}
-        {loaded ? this.renderContent() : this.renderLoading()}
+        <Box display="flex">
+          {isLoggedIn && <Navbar />}
+          <Box flex={1}>
+            {loaded ? this.renderContent() : this.renderLoading()}
+          </Box>
+        </Box>
         <Notifier />
       </MainContainer>
     );

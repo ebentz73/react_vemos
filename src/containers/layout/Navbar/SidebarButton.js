@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import { Link as RouterLink } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,6 +49,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+// @TODO rewrite this component when refactoring navbar
 export default function SidebarButton({
   route,
   externalLink,
@@ -83,15 +85,29 @@ export default function SidebarButton({
     </Button>
   );
 
-  return (
-    <Box className={classes.container} {...rest}>
-      {hasSubButtons ? (
-        innerButton
-      ) : (
+  if (hasSubButtons) {
+    return (
+      <Box className={classes.container} {...rest}>
+        {innerButton}
+      </Box>
+    );
+  }
+
+  if (externalLink) {
+    return (
+      <Box className={classes.container} {...rest}>
         <Link href={to} underline="none">
           {innerButton}
         </Link>
-      )}
+      </Box>
+    );
+  }
+
+  return (
+    <Box className={classes.container} {...rest}>
+      <Link component={RouterLink} to={to} underline="none">
+        {innerButton}
+      </Link>
     </Box>
   );
 }

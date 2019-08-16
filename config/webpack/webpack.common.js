@@ -22,6 +22,7 @@ module.exports = {
       'process.env': envHash
     }),
     new webpack.ProgressPlugin(),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
     new HtmlWebpackPlugin({
       template: paths.templatePath,
       favicon: './src/assets/favicon.png',

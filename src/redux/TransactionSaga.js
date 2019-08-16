@@ -6,7 +6,6 @@ import TransactionActions, {
 import transformFilters from '@containers/transactions/TransactionTable/transformFilters';
 
 export function* loadTransactions() {
-  // @TODO use filters
   const options = yield select(TransactionSelectors.selectTransactionOptions);
 
   const resp = yield call(request, 'listTransactions', {
@@ -17,13 +16,11 @@ export function* loadTransactions() {
   });
 
   if (resp.ok) {
-    const transactions = resp.data.rows.map(r => ({
-      // @TODO use venue time
+    const { rows, count, ...stats } = resp.data;
+    const transactions = rows.map(r => ({
       ...r,
       areas: r.tables
     }));
-    yield put(
-      TransactionActions.setTransactions(transactions, resp.data.count)
-    );
+    yield put(TransactionActions.setTransactions(transactions, count, stats));
   }
 }

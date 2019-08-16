@@ -46,6 +46,7 @@ function transformFilters(filters = {}) {
         result[filterName] = gt0(value, REFUNDED.YES);
         break;
       case 'transaction_type':
+      case 'payment_method':
         result[filterName] = {
           $in: value.map(v => v.value)
         };

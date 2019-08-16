@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,15 +31,19 @@ import {
   IDScanArray
 } from '@containers/layout/Navbar/constants';
 
-const drawerWidth = 240;
-const currentDate = moment().format('YYYY-MM-DD');
-const thirtyDaysAgo = moment()
+const DRAWER_WIDTH = 240;
+const CURRENT_DATE = moment().format('YYYY-MM-DD');
+const THIRTY_DAYS_AGO = moment()
   .subtract(29, 'days')
   .format('YYYY-MM-DD');
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
+  drawer: {
+    width: DRAWER_WIDTH,
+    flexShrink: 0
+  },
   drawerPaper: {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
     backgroundColor: theme.palette.primary.main
   },
   listText: {
@@ -50,8 +55,11 @@ Navbar.propTypes = {
   venue: PropTypes.object
 };
 
+// @TODO move out all static icon and text stuff to constants
 function Navbar({ venue }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const xsDown = useMediaQuery(theme.breakpoints.down('sm'));
   const [openAnalytics, setOpenAnalytics] = useState(true);
   const [openManage, setOpenManage] = useState(true);
   const [openReservation, setOpenReservation] = useState(false);
@@ -78,7 +86,11 @@ function Navbar({ venue }) {
     setOpenID(!openID);
   }
 
-  const transactionsLink = `/transactions?filters[start]=${thirtyDaysAgo}&filters[end]=${currentDate}`; // eslint-disable-line
+  const transactionsLink = `/transactions?filters[start]=${THIRTY_DAYS_AGO}&filters[end]=${CURRENT_DATE}`; // eslint-disable-line
+
+  if (xsDown) {
+    return null;
+  }
 
   const drawer = (
     <Box>
@@ -148,7 +160,7 @@ function Navbar({ venue }) {
               items={reservationArray}
             />
 
-            <SidebarButton route={`/guestlist/${currentDate}`}>
+            <SidebarButton route={`/guestlist/${CURRENT_DATE}`}>
               <Box mr={2} ml={2}>
                 <GuestListIcon />
               </Box>
@@ -184,19 +196,16 @@ function Navbar({ venue }) {
   );
 
   return (
-    <Box display="flex">
-      <Hidden xsDown implementation="css">
-        <Drawer
-          classes={{
-            paper: classes.drawerPaper
-          }}
-          variant="permanent"
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Hidden>
-    </Box>
+    <Drawer
+      className={classes.drawer}
+      classes={{
+        paper: classes.drawerPaper
+      }}
+      variant="permanent"
+      open
+    >
+      {drawer}
+    </Drawer>
   );
 }
 

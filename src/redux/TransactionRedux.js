@@ -2,7 +2,7 @@ import { createReducer, createActions } from 'reduxsauce';
 
 const { Types, Creators } = createActions({
   loadTransactions: null,
-  setTransactions: ['transactions', 'count'],
+  setTransactions: ['transactions', 'count', 'stats'],
   setTransactionFilter: ['filters'],
   setTransactionSorts: ['sorts'],
   setTransactionDisplay: ['display'],
@@ -17,6 +17,13 @@ export const INITIAL_STATE = {
   transactions: [],
   loading: false,
   count: 0,
+  stats: {
+    total: 0,
+    cashTotal: 0,
+    creditTotal: 0,
+    compedTotal: 0,
+    compedCount: 0
+  },
   options: {
     filters: {},
     sorts: {
@@ -39,6 +46,7 @@ export const INITIAL_STATE = {
 export const TransactionSelectors = {
   selectTransactions: state => state.transaction.transactions,
   selectCount: state => state.transaction.count,
+  selectStats: state => state.transaction.stats,
   selectTransactionOptions: state => state.transaction.options
 };
 
@@ -76,10 +84,14 @@ export const setTransactionPagination = (state, { page, rowsPerPage }) => ({
   }
 });
 
-export const setTransactions = (state, { transactions, count }) => ({
+export const setTransactions = (state, { transactions, count, stats }) => ({
   ...state,
   transactions,
-  count
+  count,
+  stats: {
+    ...state.stats,
+    ...stats
+  }
 });
 
 /* -------- Hookup Reducers to Types -------- */

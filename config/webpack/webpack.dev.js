@@ -1,5 +1,3 @@
-const webpack = require('webpack');
-
 const paths = require('./paths');
 
 module.exports = {
@@ -35,5 +33,5 @@ module.exports = {
     hot: true,
     historyApiFallback: true
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: []
 };

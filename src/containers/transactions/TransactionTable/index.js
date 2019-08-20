@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import MUIDataTable from 'mui-datatables';
+import moment from 'moment';
 import TransactionActions, {
   TransactionSelectors
 } from '@redux/TransactionRedux';
 import logger from '@utils/logger';
+import { getQuery } from '@utils/history';
 import ExpandableRow from './ExpandableRow';
 import COLUMNS from './columns';
 
@@ -30,6 +33,21 @@ function TransactionTable({
   loadTransactions,
   count
 }) {
+  useEffect(() => {
+    const query = getQuery();
+    const start = get(query, 'filters.start');
+    const end = get(query, 'filters.end');
+
+    if (start || end) {
+      setTransactionFilter({
+        timestamp: [
+          start ? moment(start).format() : null,
+          end ? moment(end).format() : null
+        ]
+      });
+    }
+  }, []);
+
   const handleTableChange = (action, options) => {
     logger.debug('Transaction Table Change:', action, options);
 
@@ -67,11 +85,13 @@ function TransactionTable({
       case 'resetFilters':
       case 'filterChange':
         setTransactionFilter(
-          options.filterList.reduce((prev, current, index) => ({
-            ...prev,
-            [options.columns[index].name]: current
-          })),
-          {}
+          options.filterList.reduce(
+            (prev, current, index) => ({
+              ...prev,
+              [options.columns[index].name]: current
+            }),
+            {}
+          )
         );
         break;
       default:

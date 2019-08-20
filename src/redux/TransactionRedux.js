@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { createReducer, createActions } from 'reduxsauce';
 
 const { Types, Creators } = createActions({
@@ -25,7 +26,14 @@ export const INITIAL_STATE = {
     compedCount: 0
   },
   options: {
-    filters: {},
+    filters: {
+      timestamp: [
+        moment()
+          .subtract(30, 'day')
+          .format(),
+        moment().format()
+      ]
+    },
     sorts: {
       timestamp: 'desc'
     },
@@ -55,6 +63,7 @@ export const setTransactionFilter = (state, { filters }) => ({
   ...state,
   options: {
     ...state.options,
+    page: 0,
     filters
   }
 });

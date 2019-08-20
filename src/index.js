@@ -5,11 +5,14 @@ import { Router } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider, StylesProvider } from '@material-ui/styles';
+import 'react-dates/initialize';
 import { SnackbarProvider } from 'notistack';
 import theme from '@styles/theme';
 import configureStore from '@redux/store';
 import history from '@utils/history';
 import '@assets/favicon.png';
+import 'react-dates/lib/css/_datepicker.css';
+import '@styles/datepicker.css';
 import App from './App';
 
 const store = configureStore();

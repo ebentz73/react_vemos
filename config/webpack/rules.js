@@ -29,6 +29,7 @@ module.exports = [
   },
   {
     test: /\.css$/,
+    exclude: /datepicker\.css/,
     use: [
       {
         loader: 'style-loader'
@@ -38,6 +39,21 @@ module.exports = [
         query: {
           modules: true,
           localIdentName: '[name]__[local]___[hash:base64:5]'
+        }
+      }
+    ]
+  },
+  {
+    test: /datepicker\.css$/,
+    use: [
+      {
+        loader: 'style-loader'
+      },
+      {
+        loader: 'css-loader',
+        query: {
+          modules: true,
+          localIdentName: '[local]'
         }
       }
     ]

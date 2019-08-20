@@ -119,6 +119,7 @@ function TransactionTable({
     responsive: 'stacked',
     search: false,
     print: false,
+    download: false,
     expandableRows: true,
     expandableRowsOnClick: true,
     rowsPerPageOptions: [10, 25, 50],

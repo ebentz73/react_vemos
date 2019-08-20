@@ -42,8 +42,7 @@ export const INITIAL_STATE = {
       transaction_type: true,
       guest_id: true,
       payment_method: true,
-      amount: true,
-      amount_refunded: true
+      amount: true
     },
     page: 0,
     rowsPerPage: 10

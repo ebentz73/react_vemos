@@ -9,7 +9,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { isSameDay } from '@utils/datetime';
 
 const TODAY = moment();
-const TOMORROW = moment().add(1, 'day');
+const YESTERDAY = moment().subtract(1, 'day');
 
 // today, yesterday, last 7 days, last 30 days, this month, last month, custom date range
 const PRESETS = [
@@ -19,9 +19,9 @@ const PRESETS = [
     end: TODAY
   },
   {
-    text: 'Tomorrow',
-    start: TOMORROW,
-    end: TOMORROW
+    text: 'Yesterday',
+    start: YESTERDAY,
+    end: YESTERDAY
   },
   {
     text: 'Last 7 Days',

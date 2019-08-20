@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import UpdateIcon from '@material-ui/icons/Update';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import SettingsIcon from '@material-ui/icons/Settings';
 import UserIcon from '@material-ui/icons/Person';
 import Hidden from '@material-ui/core/Hidden';
@@ -116,7 +116,7 @@ export default function Header({ isLoggedIn }) {
             anchorEl={anchorUpgrade}
             handleMenuClick={handleUpgradeClick}
             handleMenuClose={handleUpgradeClose}
-            Icon={UpdateIcon}
+            Icon={LockOpenIcon}
             menuItems={upgradeItems}
           />
 
@@ -190,7 +190,7 @@ export default function Header({ isLoggedIn }) {
             <TopBarCollapse
               text="Upgrades"
               open={openUpgrade}
-              Icon={UpdateIcon}
+              Icon={LockOpenIcon}
               handleCollapse={handleUpgradeCollapse}
               menuItems={upgradeItems}
             />

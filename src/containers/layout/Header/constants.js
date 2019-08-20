@@ -1,6 +1,4 @@
-import ReportIcon from '@material-ui/icons/Report';
-import DataIcon from '@material-ui/icons/Storage';
-import POSIcon from '@material-ui/icons/FiberManualRecord';
+import POSIcon from '@material-ui/icons/MonetizationOn';
 import IDIcon from '@material-ui/icons/PictureInPicture';
 import ConnectIcon from '@material-ui/icons/SwapHorizontalCircle';
 
@@ -36,16 +34,6 @@ export const settingItems = [
 ];
 
 export const upgradeItems = [
-  {
-    route: '/upgrades/Reports',
-    text: 'Automated Reports',
-    icon: ReportIcon
-  },
-  {
-    route: '/upgrades/dataoperations',
-    text: 'Data Operation',
-    icon: DataIcon
-  },
   {
     route: '/upgrades/id-scan',
     text: 'ID Scan',

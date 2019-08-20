@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { HAS_RESERVATION, REFUNDED } from '@containers/transactions/constants';
 
 function neNull(value, yesValue) {
@@ -8,7 +9,7 @@ function gt0(value, yesValue) {
   return value[0] === yesValue ? { $gt: 0 } : 0;
 }
 
-function range(value) {
+function numberRange(value) {
   if (!isNaN(value[0]) && !isNaN(value[1])) {
     return {
       $gte: value[0] * 100,
@@ -25,6 +26,35 @@ function range(value) {
   }
 }
 
+function dateRange(value) {
+  if (value[0] && value[1]) {
+    return {
+      $gte:
+        moment(value[0])
+          .startOf('day')
+          .unix() * 1000,
+      $lte:
+        moment(value[1])
+          .endOf('day')
+          .unix() * 1000
+    };
+  } else if (value[0]) {
+    return {
+      $gte:
+        moment(value[0])
+          .startOf('day')
+          .unix() * 1000
+    };
+  } else if (value[1]) {
+    return {
+      $lte:
+        moment(value[1])
+          .endOf('day')
+          .unix() * 1000
+    };
+  }
+}
+
 function transformFilters(filters = {}) {
   const result = {};
 
@@ -37,10 +67,15 @@ function transformFilters(filters = {}) {
     }
 
     switch (filterName) {
+      case 'timestamp':
+        if (value[0]) {
+          result[filterName] = dateRange(value);
+        }
+        break;
       case 'amount':
       case 'amount_voided':
       case 'amount_comped':
-        result[filterName] = range(value);
+        result[filterName] = numberRange(value);
         break;
       case 'amount_refunded':
         result[filterName] = gt0(value, REFUNDED.YES);

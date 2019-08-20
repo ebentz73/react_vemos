@@ -13,6 +13,7 @@ import {
   firebaseMulti,
   textMulti
 } from '@components/filters/mui-table';
+import { DateRangeFilter } from '@components/filters';
 import * as ServerService from '@services/ServerService';
 import * as PromoService from '@services/PromoService';
 import {
@@ -28,7 +29,32 @@ const columns = [
     label: 'Date',
     options: {
       filter: true,
-      customBodyRender: value => moment(value).format('MM/DD/YYYY hh:mm A')
+      customBodyRender: value => moment(value).format('MM/DD/YYYY hh:mm A'),
+      filterType: 'custom',
+      customFilterListRender: v => {
+        if (v[0] && v[1]) {
+          return `Start: ${moment(v[0]).format('MM/DD/YYYY')}, End: ${moment(
+            v[1]
+          ).format('MM/DD/YYYY')}`;
+        } else if (v[0]) {
+          return `Start: ${moment(v[0]).format('MM/DD/YYYY')}`;
+        } else if (v[1]) {
+          return `End: ${moment(v[1]).format('MM/DD/YYYY')}`;
+        }
+
+        return null;
+      },
+      filterOptions: {
+        display: (filterList, onChange, index, column) => {
+          return (
+            <DateRangeFilter
+              label="Date"
+              value={filterList[index]}
+              onChange={v => onChange(v, index, column)}
+            />
+          );
+        }
+      }
     }
   },
   {
@@ -61,6 +87,7 @@ const columns = [
         display: (filterList, onChange, index, column) => (
           <GuestAsyncSelect
             label="Guest"
+            placeholder="Search Guests..."
             value={filterList[index][0]}
             onChange={v => onChange(v ? [v] : [], index, column)}
           />

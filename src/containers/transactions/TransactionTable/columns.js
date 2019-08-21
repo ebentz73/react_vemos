@@ -151,7 +151,7 @@ const columns = [
       filter: true,
       customBodyRender: value => (
         <AsyncText
-          ids={(value || []).map(s => s.promocode_id)}
+          id={value}
           loadData={(venueId, id) => PromoService.getPromo(venueId, id)}
           transform={promo => promo.name}
         />

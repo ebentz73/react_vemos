@@ -19,7 +19,7 @@ export default function TopbarMenu({ text, icon, items }) {
   const handleClick = item => {
     setOpen(false);
     if (item.href) {
-      window.open(`https://${process.env.WEB_APP_URL}${item.href}`, '_blank');
+      window.location.href = `https://${process.env.WEB_APP_URL}${item.href}`;
     }
   };
 

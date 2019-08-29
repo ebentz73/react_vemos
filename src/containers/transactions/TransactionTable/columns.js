@@ -82,7 +82,6 @@ const columns = [
           transform={(guest, id) => (
             <Link
               href={URL.guest.detail(id)}
-              target="_blank"
             >{`${guest.firstName} ${guest.lastName}`}</Link>
           )}
         />
@@ -316,13 +315,7 @@ const columns = [
       sort: false,
       filter: true,
       customBodyRender: value =>
-        value ? (
-          <Link href={URL.reservation.edit(value)} target="_blank">
-            View
-          </Link>
-        ) : (
-          ''
-        ),
+        value ? <Link href={URL.reservation.edit(value)}>View</Link> : '',
       filterOptions: {
         names: [HAS_RESERVATION.YES, HAS_RESERVATION.NO]
       }

@@ -17,7 +17,7 @@ export default function TopbarCollapse({ text, icon, items, onCollapse }) {
     setOpen(false);
     onCollapse();
     if (item.href) {
-      window.open(`https://${process.env.WEB_APP_URL}${item.href}`, '_blank');
+      window.location.href = `https://${process.env.WEB_APP_URL}${item.href}`;
     }
   };
 

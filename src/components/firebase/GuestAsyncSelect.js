@@ -31,7 +31,7 @@ function GuestAsyncSelect({
     <AsyncSelect
       loadOptions={loadOptions}
       onChange={v => onChange(v)}
-      value={value}
+      value={value || null}
       getOptionLabel={guest =>
         [`${guest.firstName} ${guest.lastName}`, guest.email, guest.phone]
           .filter(t => t)

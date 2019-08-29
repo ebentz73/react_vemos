@@ -88,7 +88,8 @@ function TransactionTable({
           options.filterList.reduce(
             (prev, current, index) => ({
               ...prev,
-              [options.columns[index].name]: current
+              [options.columns[index].name]:
+                current && current.filter(f => f).length ? current : []
             }),
             {}
           )

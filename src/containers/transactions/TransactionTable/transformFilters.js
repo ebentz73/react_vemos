@@ -114,6 +114,7 @@ function transformFilters(filters = {}) {
       }
       case 'guest_id':
       case 'referrer_id':
+      case 'promocode_id':
         result[filterName] = value[0]._id;
         break;
       case 'reservation_id':

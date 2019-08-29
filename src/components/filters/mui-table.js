@@ -7,6 +7,9 @@ export function numberRange(label) {
   return {
     filterType: 'custom',
     customFilterListRender: v => {
+      if (!v) {
+        return null;
+      }
       if (v[0] && v[1]) {
         return `Min ${label}: $${v[0]}, Max ${label}: $${v[1]}`;
       } else if (v[0]) {

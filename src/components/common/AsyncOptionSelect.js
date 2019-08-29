@@ -35,7 +35,7 @@ function AsyncOptionSelect({
     <Select
       options={options}
       onChange={onChange}
-      value={value}
+      value={value || null}
       getOptionValue={item => item._id}
       TextFieldProps={{
         label,

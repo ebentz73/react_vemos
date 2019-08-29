@@ -45,7 +45,7 @@ function AsyncText({ id, loadData, venueId, empty, transform }) {
     return empty;
   }
 
-  return transform(value);
+  return transform(value, id);
 }
 
 const mapStatesToProps = state => ({

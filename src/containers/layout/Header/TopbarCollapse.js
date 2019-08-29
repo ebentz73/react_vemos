@@ -1,53 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Box from '@material-ui/core/Box';
-import TopBarButton from '@containers/layout/Header/TopbarButton';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import Collapse from '@material-ui/core/Collapse';
+import TopBarButton from './TopbarButton';
 
-TopbarMenu.propTypes = {
+TopbarCollapse.propTypes = {
   text: PropTypes.string,
-  open: PropTypes.bool,
-  Icon: PropTypes.object,
-  handleCollapse: PropTypes.func,
-  menuItems: PropTypes.array
+  icon: PropTypes.object,
+  items: PropTypes.array,
+  onCollapse: PropTypes.func
 };
 
-export default function TopbarMenu({
-  text,
-  open,
-  Icon,
-  handleCollapse,
-  menuItems
-}) {
+export default function TopbarCollapse({ text, icon, items, onCollapse }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = item => {
+    setOpen(false);
+    onCollapse();
+    if (item.href) {
+      window.open(`https://${process.env.WEB_APP_URL}${item.href}`, '_blank');
+    }
+  };
+
   return (
     <>
       <TopBarButton
-        aria-controls="upgrades-menu"
-        onClick={handleCollapse}
-        height={64}
+        onClick={() => setOpen(!open)}
+        icon={icon}
+        isOpen={open}
+        fullWidth
+        justifyContent="flex-start"
       >
-        <Box mr={1}>
-          <Icon />
-        </Box>
         {text}
-        {open ? <ExpandLess /> : <ExpandMore />}
       </TopBarButton>
       <Collapse in={open} timeout={300} unmountOnExit>
-        {menuItems.map((item, index) => {
-          const Icon = item.icon;
-
+        {items.map((item, index) => {
           return (
-            <TopBarButton key={index} kroute={item.route} isMenuItem={true}>
-              <Box display="flex" ml={1} color="white">
-                {Icon && (
-                  <Box mr={1}>
-                    <Icon />
-                  </Box>
-                )}
-                {item.text}
-              </Box>
+            <TopBarButton
+              key={index}
+              fullWidth
+              onClick={() => handleClick(item)}
+              icon={item.icon}
+              justifyContent="flex-start"
+              pl={3}
+            >
+              {item.text}
             </TopBarButton>
           );
         })}

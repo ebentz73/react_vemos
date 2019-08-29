@@ -1,40 +1,37 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
-import Box from '@material-ui/core/Box';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Typography from '@material-ui/core/Typography';
 import TopBarButton from '@containers/layout/Header/TopbarButton';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 
 TopbarMenu.propTypes = {
   text: PropTypes.string,
-  anchorEl: PropTypes.object,
-  Icon: PropTypes.object,
-  handleMenuClick: PropTypes.func,
-  handleMenuClose: PropTypes.func,
-  menuItems: PropTypes.array
+  icon: PropTypes.object,
+  items: PropTypes.array
 };
 
-export default function TopbarMenu({
-  text,
-  anchorEl,
-  Icon,
-  handleMenuClick,
-  handleMenuClose,
-  menuItems
-}) {
+export default function TopbarMenu({ text, icon, items }) {
+  const ref = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClick = item => {
+    setOpen(false);
+    if (item.href) {
+      window.open(`https://${process.env.WEB_APP_URL}${item.href}`, '_blank');
+    }
+  };
+
   return (
     <>
       <TopBarButton
-        aria-controls="upgrades-menu"
-        onClick={handleMenuClick}
-        height={64}
+        ref={ref}
+        onClick={() => setOpen(true)}
+        icon={icon}
+        isOpen={open}
       >
-        <Box mr={1}>
-          <Icon />
-        </Box>
         {text}
-        {anchorEl ? <ExpandLess /> : <ExpandMore />}
       </TopBarButton>
       <Menu
         anchorOrigin={{
@@ -47,22 +44,16 @@ export default function TopbarMenu({
         }}
         getContentAnchorEl={null}
         keepMounted
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
+        anchorEl={ref.current}
+        open={open}
+        onClose={() => setOpen(false)}
       >
-        {menuItems.map((item, index) => {
-          const Icon = item.icon;
-
+        {items.map((item, index) => {
           return (
-            <TopBarButton key={index} route={item.route} isMenuItem={true}>
-              {Icon && (
-                <Box mr={1}>
-                  <Icon />
-                </Box>
-              )}
-              {item.text}
-            </TopBarButton>
+            <MenuItem key={`menu_${index}`} onClick={() => handleClick(item)}>
+              {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+              <Typography variant="inherit">{item.text}</Typography>
+            </MenuItem>
           );
         })}
       </Menu>

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import Link from '@material-ui/core/Link';
 import {
   FirebaseText,
   FirebaseList,
@@ -16,6 +17,7 @@ import {
 import { DateRangeFilter } from '@components/filters';
 import * as ServerService from '@services/ServerService';
 import * as PromoService from '@services/PromoService';
+import URL from '@utils/url';
 import {
   PAYMENT_METHODS,
   TRANSACTION_TYPES,
@@ -77,7 +79,12 @@ const columns = [
           id={value}
           type="fs"
           getPath={(venueId, id) => `venues/${venueId}/guests/${id}`}
-          transform={guest => `${guest.firstName} ${guest.lastName}`}
+          transform={(guest, id) => (
+            <Link
+              href={URL.guest.detail(id)}
+              target="_blank"
+            >{`${guest.firstName} ${guest.lastName}`}</Link>
+          )}
         />
       ),
       filterType: 'custom',
@@ -308,7 +315,14 @@ const columns = [
     options: {
       sort: false,
       filter: true,
-      customBodyRender: value => (value ? 'Yes' : ''),
+      customBodyRender: value =>
+        value ? (
+          <Link href={URL.reservation.edit(value)} target="_blank">
+            View
+          </Link>
+        ) : (
+          ''
+        ),
       filterOptions: {
         names: [HAS_RESERVATION.YES, HAS_RESERVATION.NO]
       }

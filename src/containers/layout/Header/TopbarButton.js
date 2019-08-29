@@ -2,82 +2,64 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-
-TopbarButton.propTypes = {
-  children: PropTypes.node,
-  buttonProps: PropTypes.object,
-  isMenuItem: PropTypes.bool,
-  externalLink: PropTypes.bool,
-  route: PropTypes.string
-};
-
-TopbarButton.defaultProps = {
-  isMenuItem: false,
-  externalLink: true,
-  route: ''
-};
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  button: {
     '&:hover': {
       backgroundColor: theme.palette.secondary.main
     }
   },
-  buttonRoot: {
-    '&:hover': {
-      color: 'white'
-    }
-  },
-  buttonLabel: {
-    justifyContent: 'flex-start',
-    alignItems: 'self-start',
-    textTransform: 'none',
-    marginLeft: theme.spacing(1)
-  },
-  link: {
-    display: 'flex'
+  selected: {
+    backgroundColor: theme.palette.secondary.main
   }
 }));
 
+TopbarButton.propTypes = {
+  icon: PropTypes.node,
+  children: PropTypes.node,
+  isOpen: PropTypes.bool,
+  fullWidth: PropTypes.bool,
+  onClick: PropTypes.func
+};
+
 function TopbarButton(
-  { isMenuItem, route, externalLink, children, buttonProps, ...rest },
+  { icon, children, isOpen, onClick, fullWidth, ...rest },
   ref
 ) {
   const classes = useStyles();
-  const to = externalLink
-    ? `https://${process.env.WEB_APP_URL + route}`
-    : route;
-  const conditionalProps = isMenuItem
-    ? {}
-    : {
-        color: 'inherit'
-      };
-
-  const innerButton = (
-    <Button
-      classes={{
-        root: classes.buttonRoot,
-        label: classes.buttonLabel
-      }}
-      fullWidth={true}
-      {...conditionalProps}
-      {...buttonProps}
-    >
-      {children}
-    </Button>
-  );
 
   return (
-    <Box ref={ref} display="flex" className={classes.container} {...rest}>
-      {isMenuItem ? (
-        <Link href={to} underline="none" className={classes.link}>
-          {innerButton}
-        </Link>
-      ) : (
-        innerButton
-      )}
+    <Box
+      ref={ref}
+      component={Button}
+      height={64}
+      fullWidth={fullWidth}
+      minWidth="auto!important"
+      className={isOpen ? classes.selected : classes.button}
+      onClick={onClick}
+    >
+      <Box
+        pl={1}
+        pr={1}
+        width={1}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        color="primary.contrastText"
+        {...rest}
+      >
+        {icon && (
+          <Box component="span" mr={1} lineHeight={1}>
+            {icon}
+          </Box>
+        )}
+        {children}
+        {isOpen === false && <ExpandMore />}
+        {isOpen === true && <ExpandLess />}
+      </Box>
     </Box>
   );
 }

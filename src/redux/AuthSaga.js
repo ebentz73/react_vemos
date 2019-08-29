@@ -5,6 +5,7 @@ import { getDomain } from '@utils/history';
 import { getAuth } from '@utils/firebase';
 import logger from '@utils/logger';
 import { request } from '@api/FirebaseApi';
+import * as UsersService from '@services/UsersService';
 import AuthActions from './AuthRedux';
 
 export function signInCustomToken(token) {
@@ -48,7 +49,15 @@ export function* refreshToken(token, venue) {
         id: venue.id
       })
     );
-    yield put(AuthActions.setUser(decoded));
+
+    const profile = yield call(UsersService.getUser, decoded.uid);
+
+    yield put(
+      AuthActions.setUser({
+        ...decoded,
+        ...profile
+      })
+    );
 
     if (currentVenue) {
       // setting cookie

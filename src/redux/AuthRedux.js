@@ -23,6 +23,15 @@ export const INITIAL_STATE = {
 /* ------- Selectors ---------- */
 export const AuthSelectors = {
   selectUser: state => state.auth.user,
+  selectUsername: state => {
+    const user = state.auth.user;
+
+    if (!user) {
+      return 'Guest';
+    }
+
+    return `${user.firstName} ${user.lastName}`;
+  },
   selectToken: state => state.auth.token,
   selectCurrentVenue: state => state.auth.venue,
   selectVenueId: state => get(state, 'auth.venue.id'),

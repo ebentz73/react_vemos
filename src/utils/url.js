@@ -5,5 +5,8 @@ export default {
   reservation: {
     edit: dateId =>
       `https://${process.env.WEB_APP_URL}/reservations/edit/${dateId}`
+  },
+  event: {
+    edit: eventId => `https://${process.env.WEB_APP_URL}/events/${eventId}/edit`
   }
 };

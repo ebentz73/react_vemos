@@ -15,7 +15,7 @@ import EventIcon from '@material-ui/icons/Event';
 import MarketingIcon from '@material-ui/icons/RssFeed';
 import TransactionIcon from '@material-ui/icons/MonetizationOn';
 import GuestListIcon from '@material-ui/icons/CheckCircle';
-import IDIcon from '@material-ui/icons/PictureInPicture';
+import IDIcon from '@material-ui/icons/CreditCard';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import List from '@material-ui/core/List';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import get from 'lodash/get';
 import startCase from 'lodash/startCase';
+import Link from '@material-ui/core/Link';
 import { LoadingContainer, DescriptionList } from '@components/common';
 import { getDate } from '@utils/datetime';
 import { getPrice } from '@utils/currency';
@@ -10,6 +11,8 @@ import * as TicketSaleService from '@services/TicketSaleService';
 import * as GuestService from '@services/GuestService';
 import * as ReferrerService from '@services/ReferrerService';
 import * as TransactionService from '@services/TransactionService';
+import * as EventsService from '@services/EventsService';
+import URL from '@utils/url';
 
 TicketDetail.propTypes = {
   transaction: PropTypes.object,
@@ -23,6 +26,7 @@ function TicketDetail({ transaction, venueId, endOfNight }) {
   const [party, setParty] = useState(null);
   const [guest, setGuest] = useState(null);
   const [referrer, setReferrer] = useState(null);
+  const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -54,6 +58,9 @@ function TicketDetail({ transaction, venueId, endOfNight }) {
         ),
         GuestService.getGuest(venueId, transaction.guest_id).then(result =>
           setGuest(result)
+        ),
+        EventsService.getEvent(venueId, transaction.event_id).then(result =>
+          setEvent(result)
         )
       ]);
     } catch (e) {
@@ -74,6 +81,8 @@ function TicketDetail({ transaction, venueId, endOfNight }) {
     { label: 'Phone Number', value: get(guest, 'phone', '') },
     { label: 'Number of Guys', value: get(party, 'guys', 0) },
     { label: 'Number of Girls', value: get(party, 'girls', 0) },
+    { label: 'Checked-in Guys', value: get(party, 'paidGuys', 0) },
+    { label: 'Checked-in Girls', value: get(party, 'paidGirls', 0) },
     { label: 'Referrer', value: get(referrer, 'name', '') },
     { label: 'Promo Code', value: transaction.promocode_id },
     {
@@ -96,7 +105,20 @@ function TicketDetail({ transaction, venueId, endOfNight }) {
     },
     {
       label: 'Refunded',
-      value: transaction.amount_refunded > 0 ? 'Yes' : 'No'
+      value: transaction.amount_refunded ? 'Yes' : 'No'
+    },
+    {
+      label: 'Event',
+      value: event ? (
+        <Link
+          href={URL.event.edit(transaction.event_id)}
+          onClick={e => e.stopPropagation()}
+        >
+          {get(event, 'name')}
+        </Link>
+      ) : (
+        ''
+      )
     },
     { label: 'Checked-In', value: startCase(get(party, 'status', '')) }
   ];

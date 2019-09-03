@@ -1,6 +1,6 @@
 import React from 'react';
 import POSIcon from '@material-ui/icons/MonetizationOn';
-import IDIcon from '@material-ui/icons/PictureInPicture';
+import IDIcon from '@material-ui/icons/CreditCard';
 import ConnectIcon from '@material-ui/icons/SwapHorizontalCircle';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import SettingsIcon from '@material-ui/icons/Settings';

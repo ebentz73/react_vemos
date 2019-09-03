@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import get from 'lodash/get';
+import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { LoadingContainer, DescriptionList } from '@components/common';
@@ -11,6 +12,7 @@ import * as CoverService from '@services/CoverService';
 import * as PartyService from '@services/PartyService';
 import * as GuestService from '@services/GuestService';
 import * as TransactionService from '@services/TransactionService';
+import URL from '@utils/url';
 
 GuestListDetail.propTypes = {
   transaction: PropTypes.object,
@@ -69,11 +71,21 @@ function GuestListDetail({ transaction, venueId, endOfNight }) {
     { label: 'Number of Guys', value: get(cover, 'group.guys', 0) },
     { label: 'Number of Girls', value: get(cover, 'group.girls', 0) },
     { label: 'Price Guys', value: getPrice(get(cover, 'price.guys', 0)) },
-    { label: 'Price Girls', value: getPrice(get(cover, 'price.girls', 0)) }
+    { label: 'Price Girls', value: getPrice(get(cover, 'price.girls', 0)) },
+    { label: 'Total', value: getPrice(transaction.amount) }
   ];
 
   const partyItems = [
-    { label: 'Guest', value: GuestService.getName(guest) },
+    {
+      label: 'Guest',
+      value: guest ? (
+        <Link href={URL.guest.detail(transaction.guest_id)}>
+          {GuestService.getName(guest)}
+        </Link>
+      ) : (
+        ''
+      )
+    },
     { label: 'Number of Guys', value: get(party, 'guys', 0) },
     { label: 'Number of Girls', value: get(party, 'girls', 0) },
     { label: 'Paid Guys', value: get(party, 'paidGuys', 0) },

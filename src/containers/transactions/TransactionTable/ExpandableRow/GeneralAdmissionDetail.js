@@ -40,10 +40,10 @@ function GeneralAdmissionDetail({ transaction, venueId, endOfNight }) {
       );
       setAdmission(loadedAdmission);
 
-      if (transaction.promotion_id) {
+      if (transaction.promocode_id) {
         PromoService.getAdmissionPromotion(
           venueId,
-          transaction.promotion_id
+          transaction.promocode_id
         ).then(loadedPromotion => setPromotion(loadedPromotion));
       }
     } catch (e) {
@@ -63,7 +63,8 @@ function GeneralAdmissionDetail({ transaction, venueId, endOfNight }) {
     { label: 'Price Guys', value: getPrice(get(admission, 'price.guys', 0)) },
     { label: 'Price Girls', value: getPrice(get(admission, 'price.girls', 0)) },
     { label: 'Comped', value: transaction.amount_comped > 0 ? 'Yes' : 'No' },
-    { label: 'Promotion', value: get(promotion, 'name', '-') }
+    { label: 'Promotion', value: get(promotion, 'name', '-') },
+    { label: 'Total', value: getPrice(transaction.amount) }
   ];
 
   return (

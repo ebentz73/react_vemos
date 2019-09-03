@@ -5,8 +5,8 @@ function neNull(value, yesValue) {
   return value[0] === yesValue ? { $ne: null } : null;
 }
 
-function gt0(value, yesValue) {
-  return value[0] === yesValue ? { $gt: 0 } : 0;
+function ne0(value, yesValue) {
+  return value[0] === yesValue ? { $ne: 0 } : 0;
 }
 
 function numberRange(value) {
@@ -78,7 +78,7 @@ function transformFilters(filters = {}) {
         result[filterName] = numberRange(value);
         break;
       case 'amount_refunded':
-        result[filterName] = gt0(value, REFUNDED.YES);
+        result[filterName] = ne0(value, REFUNDED.YES);
         break;
       case 'transaction_type':
       case 'payment_method':

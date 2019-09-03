@@ -147,7 +147,6 @@ function TransactionTable({
 
   return (
     <MUIDataTable
-      title="Transactions"
       data={transactions}
       columns={TABLE_COLUMNS}
       options={TABLE_OPTIONS}

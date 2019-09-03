@@ -82,6 +82,7 @@ const columns = [
           transform={(guest, id) => (
             <Link
               href={URL.guest.detail(id)}
+              onClick={e => e.stopPropagation()}
             >{`${guest.firstName} ${guest.lastName}`}</Link>
           )}
         />
@@ -315,7 +316,16 @@ const columns = [
       sort: false,
       filter: true,
       customBodyRender: value =>
-        value ? <Link href={URL.reservation.edit(value)}>View</Link> : '',
+        value ? (
+          <Link
+            href={URL.reservation.edit(value)}
+            onClick={e => e.stopPropagation()}
+          >
+            View
+          </Link>
+        ) : (
+          ''
+        ),
       filterOptions: {
         names: [HAS_RESERVATION.YES, HAS_RESERVATION.NO]
       }
